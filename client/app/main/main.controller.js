@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('tripbanaoApp')
-  .controller('MainCtrl',['$scope', function($scope) {
+  .controller('MainCtrl',['$scope', 'Hotels', 'Flights', function($scope, Hotels, Flights) {
     $scope.awesomeThings = [];
 
     $scope.popup1 = {
@@ -30,6 +30,6 @@ angular.module('tripbanaoApp')
     };
 
     $scope.searchFlights = function(){
-
+      Flights.query();
     }
   }]);

@@ -1,6 +1,36 @@
 <navbar></navbar>
 
-<div class="container">
+<header class="hero-unit" id="banner">
+  <div class="container">
+    <h1>Available Flights!</h1>
+    <p class="lead"></p>
+  </div>
+</header>
+
+<div class="container" style="margin-top:50px">
+
+	<table class="table table-striped">
+		<thead>
+	      <tr>
+	        <th>Name</th>
+	        <th>From</th>
+	        <th>Duration</th>
+	        <th>To</th>
+	        <th>Price</th>
+	        <th></th>
+	      </tr>
+	    </thead>
+	    <tbody>
+			<tr ng-repeat="flight in flights">
+		        <td>{{flight.name}}</td>
+		        <td>{{flight.from}} <br> {{flight.from_date}} </td>
+		        <td>{{flight.duration}}</td>
+		        <td>{{flight.to}} <br> {{flight.to_date}}</td>
+		        <td>{{flight.price}}</td>
+		        <td> <input type="submit" class="btn btn-danger" value="Book"/> </td>
+		    </tr>
+	    </tbody>
+	</table>
 </div>
 
 <footer></footer>
