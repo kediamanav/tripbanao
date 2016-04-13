@@ -61,6 +61,7 @@ function removeEntity(res) {
 
 // Gets a list of Flights
 exports.index = function(req, res) {
+  console.log("In here");
   Flight.findAsync()
     .then(responseWithResult(res))
     .catch(handleError(res));
