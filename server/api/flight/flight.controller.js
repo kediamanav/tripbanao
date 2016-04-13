@@ -31,6 +31,7 @@ function responseWithResult(res, statusCode) {
 function handleEntityNotFound(res) {
   return function(entity) {
     if (!entity) {
+      console.log("not found");
       res.status(404).end();
       return null;
     }
@@ -49,6 +50,7 @@ function saveUpdates(updates) {
 }
 
 function removeEntity(res) {
+  console.log("removing")
   return function(entity) {
     if (entity) {
       return entity.removeAsync()
@@ -76,27 +78,31 @@ exports.show = function(req, res) {
 };
 
 // Creates a new Flight in the DB
-exports.create = function(req, res) {
-  Flight.createAsync(req.body)
+exports.search = function(req, res) {
+  console.log(req.body)
+  var jsonRequest = req.body
+  console.log((new Date(jsonRequest.date)).toDateString().split()[0])
+  Flight.findAsync({ 
+    'origin': jsonRequest.from, 
+    'destination': jsonRequest.to,
+    'runningDays': { $in: [(new Date(jsonRequest.date)).toDateString().split()[0]]}
+    // {'seatsAvailable': { 
+    //     $in: [{ 'date': jsonRequest.date, 'numberOfSeats': 5 }]}}
+    })
     .then(responseWithResult(res, 201))
     .catch(handleError(res));
 };
 
 // Updates an existing Flight in the DB
-exports.update = function(req, res) {
-  if (req.body._id) {
-    delete req.body._id;
-  }
-  Flight.findByIdAsync(req.params.id)
-    .then(handleEntityNotFound(res))
-    .then(saveUpdates(req.body))
+exports.insert = function(req, res) {
+  Flight.createAsync(req.body)
     .then(responseWithResult(res))
     .catch(handleError(res));
 };
 
 // Deletes a Flight from the DB
 exports.destroy = function(req, res) {
-  Flight.findByIdAsync(req.params.id)
+  Flight.findOne({ 'flightNo': req.body.flightNo})
     .then(handleEntityNotFound(res))
     .then(removeEntity(res))
     .catch(handleError(res));
