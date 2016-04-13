@@ -1,7 +1,7 @@
 'use strict';
 
-var app = require('../..');
-import request from 'supertest';
+var app = require('../../app');
+var request = require('supertest');
 
 var newAgent;
 
@@ -15,7 +15,7 @@ describe('Agent API:', function() {
         .get('/api/agents')
         .expect(200)
         .expect('Content-Type', /json/)
-        .end((err, res) => {
+        .end(function(err, res) {
           if (err) {
             return done(err);
           }
@@ -40,7 +40,7 @@ describe('Agent API:', function() {
         })
         .expect(201)
         .expect('Content-Type', /json/)
-        .end((err, res) => {
+        .end(function(err, res) {
           if (err) {
             return done(err);
           }
@@ -64,7 +64,7 @@ describe('Agent API:', function() {
         .get('/api/agents/' + newAgent._id)
         .expect(200)
         .expect('Content-Type', /json/)
-        .end((err, res) => {
+        .end(function(err, res) {
           if (err) {
             return done(err);
           }
@@ -85,7 +85,7 @@ describe('Agent API:', function() {
   });
 
   describe('PUT /api/agents/:id', function() {
-    var updatedAgent;
+    var updatedAgent
 
     beforeEach(function(done) {
       request(app)
@@ -122,7 +122,7 @@ describe('Agent API:', function() {
       request(app)
         .delete('/api/agents/' + newAgent._id)
         .expect(204)
-        .end((err, res) => {
+        .end(function(err, res) {
           if (err) {
             return done(err);
           }
@@ -134,7 +134,7 @@ describe('Agent API:', function() {
       request(app)
         .delete('/api/agents/' + newAgent._id)
         .expect(404)
-        .end((err, res) => {
+        .end(function(err, res) {
           if (err) {
             return done(err);
           }

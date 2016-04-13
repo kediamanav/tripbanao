@@ -1,22 +1,106 @@
 <navbar></navbar>
 
+<!--
 <header class="hero-unit" id="banner">
   <div class="container">
     <h1>'Allo, 'Allo!</h1>
     <p class="lead">Kick-start your next web app with Angular Fullstack</p>
     <img src="assets/images/yeoman.png" alt="I'm Yeoman">
   </div>
-</header>
+</header>-->
 
-<div class="container">
-  <div class="row">
-    <div class="col-lg-12">
-      <h1 class="page-header">Features:</h1>
-      <ul class="nav nav-tabs nav-stacked col-md-4 col-lg-4 col-sm-6" ng-repeat="thing in awesomeThings">
-        <li>{{thing.name}}</a></li>
-      </ul>
-    </div>
+
+<div class="container-fluid" style="background-image: url('assets/images/background.jpg'); margin:0px; background-size:cover; height: 600px; padding:0px; background-position: top bottom">
+  
+  <div id="rectangle">
+
+    <center><h1 style="margin-bottom:30px">Book Your Flight</h1></center>
+    <form class="form-horizontal" name="form" ng-submit="searchFlights()">
+
+      <!-- Type of flight -->
+      <div class="form-group">
+        <label class="col-md-3 col-md-offset-1 control-label">
+          <input type="radio" ng-model="flight.type" value="1"> One-way
+        </label>
+
+        <label class="col-md-offset-1 control-label">
+          <input type="radio" ng-model="flight.type" value="2"> Round-Trip
+        </label>
+
+        <label class="col-md-offset-1 control-label">
+          <input type="radio" ng-model="flight.type" value="3"> Multi-city
+        </label>
+      </div>
+
+
+
+      <!--From city -->
+      <div class="form-group">
+        <label for="from" class="col-md-2 col-md-offset-2 control-label">From</label>
+        <div class="col-md-3">
+          <input type="text" required ng-model="flight.from" name="from" class="form-control" placeholder="Type Departure City"/>
+        </div>
+        <!-- Add multicity -->
+        <div ng-if="flight.type==3">
+          <button type="button" ng-click="increaseCity()" class="btn btn-primary control-label" value="Add city">Add city</button>
+        </div>
+      </div>
+
+      <!--To city -->
+      <div class="form-group">
+        <label for="to" class="col-md-2 col-md-offset-2 control-label">To</label>
+        <div class="col-md-3">
+          <input type="text" required ng-model="flight.to" name="to" class="form-control" placeholder="Type Arrival City"/>
+        </div>
+      </div>
+        
+      <!--Departure date -->
+      <div class="form-group">
+        <label for="departure_date" class="col-md-offset-2 col-md-2 control-label">Departure Date</label>
+        <div class="col-md-2">
+          <p class="input-group">
+            <!--min-date="minDate" max-date="maxDate" -->
+            <input type="text" required class="form-control" datepicker-popup="shortDate" ng-model="flight.departure_date" is-open="popup1.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close"/>
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+            </span>
+          </p>
+        </div>
+      </div>
+
+      <!--Return date -->
+      <div class="form-group" ng-if="flight.type==2">
+        <label for="return_date" class="col-md-offset-2 col-md-2 control-label">Return Date</label>
+        <div class="col-md-2">
+          <p class="input-group">
+            <!--min-date="minDate" max-date="maxDate" -->
+            <input type="text" required class="form-control" datepicker-popup="shortDate" ng-model="flight.return_date" is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close"/>
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
+            </span>
+          </p>
+        </div>
+      </div>
+
+      <!--Number of Persons -->
+      <div class="form-group">
+        <label for="count" class="col-md-2  col-md-offset-2 control-label">Number of adults</label>
+        <div class="col-md-3">
+          <div class="input-group">
+            <input type="number" min=0 max=5 step=1 ng-model="flight.count" class="form-control" id="count" value="1"/>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <div class="col-md-offset-5 col-md-6">
+          <input type="submit" class="btn btn-warning" value="Search Flights"/>
+        </div>
+      </div>
+
+    </form>
   </div>
+
 </div>
 
 <footer></footer>

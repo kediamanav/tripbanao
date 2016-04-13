@@ -1,11 +1,12 @@
 'use strict';
 
-import mongoose from 'mongoose';
+var mongoose = require('bluebird').promisifyAll(require('mongoose'));
+var Schema = mongoose.Schema;
 
-var AgentSchema = new mongoose.Schema({
+var AgentSchema = new Schema({
   name: String,
   info: String,
   active: Boolean
 });
 
-export default mongoose.model('Agent', AgentSchema);
+module.exports = mongoose.model('Agent', AgentSchema);
