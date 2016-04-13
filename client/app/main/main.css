@@ -25,3 +25,11 @@
 .navbar-text {
   margin-left: 15px;
 }
+
+#rectangle{
+  background:black;
+  display: inline;
+  margin: 0 auto;
+  opacity: 0.1;
+  color: black;
+}

@@ -5,6 +5,7 @@ angular.module('tripbanaoApp', [
   'ngResource',
   'ngSanitize',
   'ngRoute',
+  'ngAnimate',
   'ui.bootstrap'
 ])
   .config(function($routeProvider, $locationProvider) {
