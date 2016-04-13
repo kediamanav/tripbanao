@@ -100,3 +100,9 @@ export function destroy(req, res) {
     .then(removeEntity(res))
     .catch(handleError(res));
 }
+
+
+// Queries all flight companies 
+export function flightSearch(req, res) {
+  
+}
