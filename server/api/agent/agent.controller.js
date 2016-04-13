@@ -61,6 +61,7 @@ function removeEntity(res) {
 
 // Gets a list of Agents
 exports.index = function(req, res) {
+  console.log("in here index");
   Agent.findAsync()
     .then(responseWithResult(res))
     .catch(handleError(res));
@@ -68,6 +69,7 @@ exports.index = function(req, res) {
 
 // Gets a single Agent from the DB
 exports.show = function(req, res) {
+  console.log("in here get");
   Agent.findByIdAsync(req.params.id)
     .then(handleEntityNotFound(res))
     .then(responseWithResult(res))
@@ -83,14 +85,14 @@ exports.create = function(req, res) {
 
 // Updates an existing Agent in the DB
 exports.update = function(req, res) {
-  if (req.body._id) {
-    delete req.body._id;
-  }
-  Agent.findByIdAsync(req.params.id)
-    .then(handleEntityNotFound(res))
-    .then(saveUpdates(req.body))
-    .then(responseWithResult(res))
-    .catch(handleError(res));
+  console.log("in update");
+  console.log(req.params);
+  console.log(req.body);
+
+  var flights = {
+    "name":"vatsalya"
+  };
+  res.json(flights);
 };
 
 // Deletes a Agent from the DB
