@@ -10,14 +10,19 @@ var bookingsObj = new Schema({
 	{ noId: true}
 );
 
-var HotelSchema = new Schema({
+var HotelDetails = new Schema({
   Room_No: Number,
   Type: String,
   Price: Number,
   Bookings: [bookingsObj],//array of bookings for that particular room.
-  No_of_Person: Number
+  No_of_Person: Number},
+  { noId: true
 });
 
-HotelSchema.index({ Room_No: 1}, { unique: true});
+//Assuming that there is single hotel per city. In that hotel, we store the details of the rooms.
+var HotelSchema = new Schema({
+  City: String,
+  HotelDescription: [HotelDetails]
+});
 
 export default mongoose.model('Hotel', HotelSchema);
