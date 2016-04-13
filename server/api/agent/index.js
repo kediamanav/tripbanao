@@ -12,6 +12,6 @@ var router = express.Router();
 // router.patch('/:id', controller.update);
 // router.delete('/:id', controller.destroy);
 
-router.get('/flight', controller.flight_search);
+router.get('/flight', controller.flightSearch);
 
 module.exports = router;
