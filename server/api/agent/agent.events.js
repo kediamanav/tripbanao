@@ -4,8 +4,8 @@
 
 'use strict';
 
-import {EventEmitter} from 'events';
-import Agent from './agent.model';
+var EventEmitter = require('events').EventEmitter;
+var Agent = require('./agent.model');
 var AgentEvents = new EventEmitter();
 
 // Set max event listeners (0 == unlimited)
@@ -30,4 +30,4 @@ function emitEvent(event) {
   }
 }
 
-export default AgentEvents;
+module.exports = AgentEvents;

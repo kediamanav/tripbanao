@@ -9,35 +9,21 @@
 
 'use strict';
 
-import _ from 'lodash';
-import Agent from './agent.model';
+var _ = require('lodash');
+var Agent = require('./agent.model');
 
-function respondWithResult(res, statusCode) {
+function handleError(res, statusCode) {
+  statusCode = statusCode || 500;
+  return function(err) {
+    res.status(statusCode).send(err);
+  };
+}
+
+function responseWithResult(res, statusCode) {
   statusCode = statusCode || 200;
   return function(entity) {
     if (entity) {
       res.status(statusCode).json(entity);
-    }
-  };
-}
-
-function saveUpdates(updates) {
-  return function(entity) {
-    var updated = _.merge(entity, updates);
-    return updated.save()
-      .then(updated => {
-        return updated;
-      });
-  };
-}
-
-function removeEntity(res) {
-  return function(entity) {
-    if (entity) {
-      return entity.remove()
-        .then(() => {
-          res.status(204).end();
-        });
     }
   };
 }
@@ -52,57 +38,65 @@ function handleEntityNotFound(res) {
   };
 }
 
-function handleError(res, statusCode) {
-  statusCode = statusCode || 500;
-  return function(err) {
-    res.status(statusCode).send(err);
+function saveUpdates(updates) {
+  return function(entity) {
+    var updated = _.merge(entity, updates);
+    return updated.saveAsync()
+      .spread(function(updated) {
+        return updated;
+      });
+  };
+}
+
+function removeEntity(res) {
+  return function(entity) {
+    if (entity) {
+      return entity.removeAsync()
+        .then(function() {
+          res.status(204).end();
+        });
+    }
   };
 }
 
 // Gets a list of Agents
-export function index(req, res) {
-  return Agent.find().exec()
-    .then(respondWithResult(res))
+exports.index = function(req, res) {
+  Agent.findAsync()
+    .then(responseWithResult(res))
     .catch(handleError(res));
-}
+};
 
 // Gets a single Agent from the DB
-export function show(req, res) {
-  return Agent.findById(req.params.id).exec()
+exports.show = function(req, res) {
+  Agent.findByIdAsync(req.params.id)
     .then(handleEntityNotFound(res))
-    .then(respondWithResult(res))
+    .then(responseWithResult(res))
     .catch(handleError(res));
-}
+};
 
 // Creates a new Agent in the DB
-export function create(req, res) {
-  return Agent.create(req.body)
-    .then(respondWithResult(res, 201))
+exports.create = function(req, res) {
+  Agent.createAsync(req.body)
+    .then(responseWithResult(res, 201))
     .catch(handleError(res));
-}
+};
 
 // Updates an existing Agent in the DB
-export function update(req, res) {
+exports.update = function(req, res) {
   if (req.body._id) {
     delete req.body._id;
   }
-  return Agent.findById(req.params.id).exec()
+  Agent.findByIdAsync(req.params.id)
     .then(handleEntityNotFound(res))
     .then(saveUpdates(req.body))
-    .then(respondWithResult(res))
+    .then(responseWithResult(res))
     .catch(handleError(res));
-}
+};
 
 // Deletes a Agent from the DB
-export function destroy(req, res) {
-  return Agent.findById(req.params.id).exec()
+exports.destroy = function(req, res) {
+  Agent.findByIdAsync(req.params.id)
     .then(handleEntityNotFound(res))
     .then(removeEntity(res))
     .catch(handleError(res));
-}
-
-
-// Queries all flight companies 
-export function flightSearch(req, res) {
-  
-}
+};
