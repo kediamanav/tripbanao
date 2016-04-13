@@ -25,4 +25,6 @@ var HotelSchema = new Schema({
   hotelDescription: [HotelDetails]
 });
 
+HotelSchema.index({city: 1, roomNo: 1, unique: true});
+
 export default mongoose.model('Hotel', HotelSchema);
