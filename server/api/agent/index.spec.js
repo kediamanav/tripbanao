@@ -38,8 +38,13 @@ describe('Agent API Router:', function() {
 
     it('should route to agent.controller.index', function() {
       routerStub.get
+<<<<<<< HEAD
+        .withArgs('/', 'agentCtrl.index')
+        .should.have.been.calledOnce;
+=======
                 .withArgs('/', 'agentCtrl.index')
                 .should.have.been.calledOnce;
+>>>>>>> 35867dc503070c18322617052ee74cf8fa960a7d
     });
 
   });
@@ -48,8 +53,13 @@ describe('Agent API Router:', function() {
 
     it('should route to agent.controller.show', function() {
       routerStub.get
+<<<<<<< HEAD
+        .withArgs('/:id', 'agentCtrl.show')
+        .should.have.been.calledOnce;
+=======
                 .withArgs('/:id', 'agentCtrl.show')
                 .should.have.been.calledOnce;
+>>>>>>> 35867dc503070c18322617052ee74cf8fa960a7d
     });
 
   });
@@ -58,8 +68,13 @@ describe('Agent API Router:', function() {
 
     it('should route to agent.controller.create', function() {
       routerStub.post
+<<<<<<< HEAD
+        .withArgs('/', 'agentCtrl.create')
+        .should.have.been.calledOnce;
+=======
                 .withArgs('/', 'agentCtrl.create')
                 .should.have.been.calledOnce;
+>>>>>>> 35867dc503070c18322617052ee74cf8fa960a7d
     });
 
   });
@@ -68,8 +83,13 @@ describe('Agent API Router:', function() {
 
     it('should route to agent.controller.update', function() {
       routerStub.put
+<<<<<<< HEAD
+        .withArgs('/:id', 'agentCtrl.update')
+        .should.have.been.calledOnce;
+=======
                 .withArgs('/:id', 'agentCtrl.update')
                 .should.have.been.calledOnce;
+>>>>>>> 35867dc503070c18322617052ee74cf8fa960a7d
     });
 
   });
@@ -78,8 +98,13 @@ describe('Agent API Router:', function() {
 
     it('should route to agent.controller.update', function() {
       routerStub.patch
+<<<<<<< HEAD
+        .withArgs('/:id', 'agentCtrl.update')
+        .should.have.been.calledOnce;
+=======
                 .withArgs('/:id', 'agentCtrl.update')
                 .should.have.been.calledOnce;
+>>>>>>> 35867dc503070c18322617052ee74cf8fa960a7d
     });
 
   });
@@ -88,8 +113,13 @@ describe('Agent API Router:', function() {
 
     it('should route to agent.controller.destroy', function() {
       routerStub.delete
+<<<<<<< HEAD
+        .withArgs('/:id', 'agentCtrl.destroy')
+        .should.have.been.calledOnce;
+=======
                 .withArgs('/:id', 'agentCtrl.destroy')
                 .should.have.been.calledOnce;
+>>>>>>> 35867dc503070c18322617052ee74cf8fa960a7d
     });
 
   });
