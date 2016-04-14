@@ -215,9 +215,14 @@ export function flightSearch(req, res) {
 }
 
 
-export function flightRelease(arr){
-	console.log('in release ' + req.body);
 
+function respondToManav(res, result){
+	return function(entity) {
+		var id = entity._id;
+		var data = {'result': result,
+					'id': id};
+		res.json(data);
+	}
 }
 
 
@@ -229,11 +234,14 @@ export function flightHold(req, res) {
 	var lock = new ReadWriteLock();
 	var count = 0;
 	var okay = 1;
+	var dbData = [];
 
 	for(var i = 0; i < data.length; i++) {
 		var dataToSend = {'flightNo': data[i].flightNo, 
 		'DepartureTime': data[i].departureTime, 
 		'numberOfSeats': data[i].numberOfSeats};
+
+		dbData.push(dataToSend);
 
 		var client = request.createClient(flightServers(data[i].companyName));
 		client.post(
@@ -253,18 +261,21 @@ export function flightHold(req, res) {
 					release();
 				});
 				if(c == data.length){
-					var result = {};
 					if(okay == 1) {
-						timer = setTimeout(releaseSeats, ttl, data);
+						flightDB.createAsync(dbData)
+							.then(respondToManav(res, true));
 					}
 					else {
-						res.json()
+						var tomnv = {'result': false}
+						res.json(tomnv);
 					}
 				}
 
 			}
 			);
-}}
+	}
+
+}	
 
 // flight release
 export function flightRelease(req, res) {
