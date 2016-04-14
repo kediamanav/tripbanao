@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('tripbanaoApp')
-  .controller('FlightbookCtrl',['$scope', '$location', 'FlightBook', 'FlightDetail', 'BookingDetail', '$interval', '$window', 'FlightRelease', function ($scope, $location, FlightBook, FlightDetail, BookingDetail, $interval, $window, FlightRelease) {
+  .controller('FlightbookCtrl',['$scope', '$location', 'FlightBook', 'FlightDetail', 'BookingDetail', '$timeout', '$window', 'FlightRelease', function ($scope, $location, FlightBook, FlightDetail, BookingDetail, $timeout, $window, FlightRelease) {
     
   	$scope.loading =true;
   	$scope.text = "Loading...";
@@ -25,7 +25,7 @@ angular.module('tripbanaoApp')
         }
     });
 
-    var stop = $interval(function() {
+    var stop = $timeout(function() {
         if ($scope.timer > 0) {
         	$scope.timer = $scope.timer-1;
         } else {
@@ -35,7 +35,7 @@ angular.module('tripbanaoApp')
 
     $scope.stopTime = function() {
       if (angular.isDefined(stop)) {
-        $interval.cancel(stop);
+        $timeout.cancel(stop);
         stop = undefined;
 
         FlightRelease.release($scope.user);
@@ -49,7 +49,7 @@ angular.module('tripbanaoApp')
 
     $scope.destroyTimer = function(){
     	if (angular.isDefined(stop)) {
-	        $interval.cancel(stop);
+	        $timeout.cancel(stop);
 	        stop = undefined;
 	    }
     }
