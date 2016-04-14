@@ -1,3 +1,4 @@
+
 'use strict';
 
 var _ = require('lodash');
@@ -99,8 +100,6 @@ function sendSearchResult(id, jsonRequest, requestDate, flight, res){
   }
   res.json({'id': id, 'payLoad': result});
 }
-
-
 // Gets a list of Flights
 exports.index = function(req, res) {
   console.log("In here");
@@ -143,7 +142,7 @@ exports.update = function(req, res) {
   if (req.body._id) {
     delete req.body._id;
   }
-  
+
   return updateSeatAvailableArray(req, res);
 };
 
