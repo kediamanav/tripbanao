@@ -1,5 +1,39 @@
 <navbar></navbar>
 
+<header class="hero-unit" id="banner">
+  <div class="container">
+    <h1>Available Hotels!</h1>
+    <p class="lead"></p>
+  </div>
+</header>
 
+<div class="container" style="margin-top:50px">
+
+	<center><h1 ng-if="loading==true" style="margin-bottom:40px">Loading ...</h1></center>
+	<table class="table table-striped" ng-if="loading==false">
+		<thead>
+	      <tr>
+	        <th>Name</th>
+	        <th>Location</th>
+	        <th>Duration</th>
+	        <th>Check-in</th>
+	        <th>Check-out</th>
+	        <th>Price</th>
+	        <th></th>
+	      </tr>
+	    </thead>
+	    <tbody>
+			<tr ng-repeat="hotel in hotels">
+		        <td>{{hotel.name}}</td>
+		        <td>{{hotel.location}}</td>
+		        <td>{{hotel.duration}}</td>
+		        <td>{{hotel.checkin}}</td>
+		        <td>{{hotel.checkout}}</td>
+		        <td>{{hotel.price}}</td>
+		        <td> <input type="submit" class="btn btn-danger" value="Book"/> </td>
+		    </tr>
+	    </tbody>
+	</table>
+</div>
 
 <footer></footer>

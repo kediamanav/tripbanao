@@ -1,8 +1,11 @@
 'use strict';
 
 angular.module('tripbanaoApp')
-  .controller('FlightsCtrl',['$scope', 'Flights', function ($scope, Flights) {
-    $scope.flights = [{
+  .controller('FlightsCtrl',['$scope', 'Travel', 'FlightDetail', function ($scope, Travel, FlightDetail) {
+
+    $scope.loading =true;
+
+    /*$scope.flights = [{
     		"name":"emirates",
     		"from":"kolkata",
     		"to":"chicago",
@@ -27,5 +30,16 @@ angular.module('tripbanaoApp')
     		"price": "45339",
     		"duration": "32 hrs"
     	},
-    ]
+    ];*/
+
+    $scope.fl = FlightDetail.getFlight();
+    console.log($scope.fl);
+
+    Travel.update($scope.fl, function success(value){
+        $scope.loading = false;
+        $scope.flights = value;
+        console.log("Done successfully");
+        console.log(value);
+    });
+
   }]);
