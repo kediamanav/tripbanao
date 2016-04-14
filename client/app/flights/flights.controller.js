@@ -35,7 +35,7 @@ angular.module('tripbanaoApp')
     $scope.fl = FlightDetail.getFlight();
     console.log($scope.fl);
 
-    Travel.update({type:1} , $scope.fl, function success(value){
+    Travel.update($scope.fl, function success(value){
         $scope.loading = false;
         $scope.flights = value;
         console.log("Done successfully");
