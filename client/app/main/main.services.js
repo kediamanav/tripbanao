@@ -10,7 +10,7 @@ angular.module('tripbanaoApp')
   }])
   .factory('FlightBook',['$resource', function ($resource) {
 
-    return $resource('/api/agents/flight/book',null,{
+    return $resource('/api/agents/flight/hold',null,{
       'book': {method: 'POST'}
     });
   }])
