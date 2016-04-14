@@ -163,7 +163,7 @@ export function flightSearch(req, res) {
 
   console.log(req.body);
 
-  var flightServers = ['http://10.147.8.201:9000', 'http://10.5.16.241:9000']; //
+  var flightServers = ['http://10.147.8.201:9000'];
   var data = req.body;
   var resp = [];
   var count = 0;
@@ -185,7 +185,7 @@ export function flightSearch(req, res) {
             release();
           });
           console.log('huha ' + body);
-          if (!error && response.statusCode == 201) {
+          if (!error && response.statusCode == 200) {
             var server = response.request.uri.host;
             var id = body.id;
             if(!result[id]) result[id] = {};
