@@ -12,12 +12,12 @@ var seatAvailableObj = new Schema({
 
 var FlightSchema = new Schema({
   flightNo: String,
-  origin: String,
-  destination: String,
+  from: String,
+  to: String,
   departureTime: { type: Date, default: Date.now },
   arrivalTime: { type: Date, default: Date.now },
   duration: { type: Number, default: 2 },
-  runningDays: [String], // An array of days when the flight runs weekly. [Mon, Tues, Wed]
+  runningDays:{ type:[String], default: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'] }, // An array of days when the flight runs weekly. [Mon, Tues, Wed]
   seatsAvailable: [seatAvailableObj] //Array to store seatAvailableObj Schema.
 });
 
