@@ -81,19 +81,18 @@ exports.show = function(req, res) {
 exports.search = function(req, res) {
   console.log(req.body)
   var jsonRequest = req.body
-  console.log((new Date(jsonRequest.date)).toDateString().split()[0])
   Flight.findAsync({ 
-    'origin': jsonRequest.from, 
-    'destination': jsonRequest.to,
-    'runningDays': { $in: [(new Date(jsonRequest.date)).toDateString().split()[0]]}
-    // {'seatsAvailable': { 
-    //     $in: [{ 'date': jsonRequest.date, 'numberOfSeats': 5 }]}}
+    'from': jsonRequest.from, 
+    'to': jsonRequest.to,
+    'runningDays': { $in: [(new Date(jsonRequest.date)).toDateString().split(' ')[0]]},
+    // 'seatsAvailable': { 
+    //     $in: [{ 'date': jsonRequest.date, 'numberOfSeats': 5 }]}
     })
     .then(responseWithResult(res, 201))
     .catch(handleError(res));
 };
 
-// Updates an existing Flight in the DB
+// Inserts a existing Flight in the DB
 exports.insert = function(req, res) {
   Flight.createAsync(req.body)
     .then(responseWithResult(res))
