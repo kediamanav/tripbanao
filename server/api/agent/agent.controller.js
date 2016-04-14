@@ -89,10 +89,62 @@ exports.update = function(req, res) {
   console.log(req.params);
   console.log(req.body);
 
-  var flights = {
-    "name":"vatsalya"
-  };
-  res.json(flights);
+  var flights = [{
+      "name":"emirates",
+      "from":"kolkata",
+      "to":"chicago",
+      "from_date": "8 aug, 20:30",
+      "to_date": "9 aug, 15:30",
+      "price": "47339",
+      "duration": "29 hrs"
+    },{
+      "name":"air india",
+      "from":"kolkata",
+      "to":"chicago",
+          "from_date": "8 aug, 20:30",
+          "to_date": "9 aug, 15:30",
+      "price": "41339",
+      "duration": "24 hrs"
+    },{
+      "name":"ethiad",
+      "from":"kolkata",
+      "to":"chicago",
+          "from_date": "8 aug, 20:30",
+          "to_date": "9 aug, 15:30",
+      "price": "45339",
+      "duration": "32 hrs"
+    },
+  ];
+
+  var hotels = [{
+      "name":"hyatt",
+      "checkin": "8 aug, 20:30",
+      "checkout": "9 aug, 15:30",
+      "price": "47339",
+      "duration": "29 hrs",
+      "location": "howrah"
+    },{
+      "name":"hyatt",
+      "checkin": "8 aug, 20:30",
+      "checkout": "9 aug, 15:30",
+      "price": "47339",
+      "duration": "29 hrs",
+      "location": "howrah"
+    },{
+      "name":"hyatt",
+      "checkin": "8 aug, 20:30",
+      "checkout": "9 aug, 15:30",
+      "price": "47339",
+      "duration": "29 hrs",
+      "location": "howrah"
+    },
+  ];
+
+
+  if(req.params.id==2)
+    res.json(hotels);
+  else
+    res.json(flights);
 };
 
 // Deletes a Agent from the DB
