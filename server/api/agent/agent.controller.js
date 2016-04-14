@@ -164,7 +164,7 @@ exports.destroy = function(req, res) {
 // Queries all flight companies 
 export function flightSearch(req, res) {
 
-	console.log(req.body);
+	console.log('in search ' + req.body);
 
 	var data = req.body;
 	var resp = [];
@@ -193,12 +193,15 @@ export function flightSearch(req, res) {
 						if(!result[id]) result[id] = {};
 						result[id][server] = body.payLoad;
 
+						var c;
+
 						lock.readLock(function(release){
-							if(count == data.length * keys(flightServers).length) {
-								res.json(result);
-							}
+							c = count;
 							release();
 						});
+						if(c == data.length * keys(flightServers).length) {
+							res.json(result);
+						}
 					} else {
 						console.log('huha error ' + error);
 					}
@@ -208,13 +211,56 @@ export function flightSearch(req, res) {
 	}
 }
 
-// holding flight seats for 30 sec
-export function flightBook(req, res) {
-	console.log(req.body);
+
+export function flightRelease(arr){
+	console.log('in release ' + req.body);
+
+}
+
+
+// holding flight seats for ttl time
+export function flightHold(req, res) {
+	console.log('in hold ' + req.body);
 
 	var data = req.body;
+	var lock = new ReadWriteLock();
+	var count = 0;
+	var okay = 1;
+
 	for(var i = 0; i < data.length; i++) {
-		// var client = request.create
+		var dataToSend = {'flightNo': data[i].flightNo, 
+		'DepartureTime': data[i].departureTime, 
+		'numberOfSeats': data[i].numberOfSeats};
+
+		var client = request.createClient(flightServers(data[i].companyName));
+		client.post(
+			'/api/flights/hold',
+			dataToSend,
+			function(err, response, body){
+				lock.writeLock(function(release){
+					count += 1;
+					release();
+				});
+				if(!body.success) okay = 0;
+
+				var c;
+
+				lock.readLock(function(release){
+					c = count;
+					release();
+				});
+				if(c == data.length){
+					var result = {};
+					if(okay == 1) {
+						timer = setTimeout(releaseSeats, ttl, data);
+					}
+					else {
+						res.json()
+					}
+				}
+
+			}
+			);
 	}
 
 }	

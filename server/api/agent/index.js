@@ -13,6 +13,6 @@ router.post('/', controller.update);
 // router.delete('/:id', controller.destroy);
 
 router.post('/flight/search', controller.flightSearch);
-router.post('/flight/book', controller.flightBook);
+router.post('/flight/hold', controller.flightHold);
 
 module.exports = router;
