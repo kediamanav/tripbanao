@@ -12,6 +12,7 @@
 var _ = require('lodash');
 var Agent = require('./agent.model');
 var request = require('request-json');
+var ReadWriteLock = require('rwlock');
 
 function handleError(res, statusCode) {
   statusCode = statusCode || 500;
@@ -162,35 +163,43 @@ export function flightSearch(req, res) {
 
   console.log(req.body);
 
-  var flightServers = [ 'http://10.147.169.33:9000']; //'http://10.147.8.201:9000',
-  var client = request.createClient('');
+  var flightServers = ['http://10.147.8.201:9000', 'http://10.5.16.241:9000']; //
   var data = req.body;
   var resp = [];
   var count = 0;
   var result = [];
+  var lock = new ReadWriteLock();
 
   for(var i = 0; i < data.length; i++) {
 
     var dataToSend = {"id": i, "payLoad":data[i]};
     
     for(var j = 0; j < flightServers.length; j++) {
+      var client = request.createClient(flightServers[j]);
       client.post(
-        flightServers[j] + '/api/flights/search',
+        '/api/flights/search',
         dataToSend,
         function (error, response, body) {
-          count += 1;  
-
-          console.log(body)
-            if (!error && response.statusCode == 201) {
-              var server = response.request.uri.host;
-              var id = body.id;
-              if(!result[id]) result[id] = {};
-              result[id][server] = body.payLoad;
-              if(count = data.length * flightServers.length) 
-                res.json(result);
-            } else {
-              console.log('error ' + error);
-            }
+          lock.writeLock(function(release) {
+            count += 1;  
+            release();
+          });
+          console.log('huha ' + body);
+          if (!error && response.statusCode == 201) {
+            var server = response.request.uri.host;
+            var id = body.id;
+            if(!result[id]) result[id] = {};
+            result[id][server] = body.payLoad;
+            
+            lock.readLock(function(release){
+              if(count == data.length * flightServers.length) {
+               res.json(result);
+              }
+              release();
+            });
+          } else {
+            console.log('huha error ' + error);
+          }
         }
     );
     }
