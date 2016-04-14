@@ -242,7 +242,7 @@ export function flightHold(req, res) {
 
 		dbData.push(dataToSend);
 
-		var client = request.createClient(flightServers(data[i].companyName));
+		var client = request.createClient(flightServers[data[i].companyName]);
 		client.post(
 			'/api/flights/hold',
 			dataToSend,

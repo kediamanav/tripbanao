@@ -12,7 +12,9 @@ angular.module('tripbanaoApp')
     $scope.user = {};
     $scope.timer = 10;
 
-    FlightBook.book($scope.fl, function success(value){
+    $scope.temp = [$scope.fl];
+
+    FlightBook.book($scope.temp, function success(value){
     	//value==true;
         if(value.result==true){
         	console.log("Go ahead with the booking");
