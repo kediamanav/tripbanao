@@ -30,7 +30,8 @@ angular.module('tripbanaoApp')
 
     $scope.bookFlight = function(data){
         console.log(data);
-        FlightDetail.putFlight($scope.flight);
+        data["seatsAvailed"] = $scope.fl.count;
+        FlightDetail.putFlight(data);
         $location.path("/flightbook");
     };
 
