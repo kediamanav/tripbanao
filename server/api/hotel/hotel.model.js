@@ -12,9 +12,9 @@ var bookingsObj = new Schema({
 
 var HotelDetails = new Schema({
   roomNo: Number,
-  type: String,
-  price: Number,
-  bookings: [bookingsObj],//array of bookings for that particular room.
+  type: { type: String, default: "DoubleAC" },
+  price: { type: Number, default: 2000},
+  bookings: [bookingsObj], //array of bookings for that particular room.
   numberOfPerson: Number},
   { noId: true
 });
@@ -24,5 +24,7 @@ var HotelSchema = new Schema({
   city: String,
   hotelDescription: [HotelDetails]
 });
+
+HotelSchema.index({city: 1, roomNo: 1, unique: true});
 
 export default mongoose.model('Hotel', HotelSchema);
