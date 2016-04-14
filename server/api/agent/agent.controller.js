@@ -156,41 +156,43 @@ exports.destroy = function(req, res) {
     .catch(handleError(res));
 };
 
+
 // Queries all flight companies 
 export function flightSearch(req, res) {
 
   console.log(req.body);
 
-  var flightServers = ['http://10.146.220.140:9000'];
+  var flightServers = [ 'http://10.147.169.33:9000']; //'http://10.147.8.201:9000',
   var client = request.createClient('');
-
   var data = req.body;
   var resp = [];
+  var count = 0;
+  var result = [];
 
   for(var i = 0; i < data.length; i++) {
-    var currResult = [];
+
+    var dataToSend = {"id": i, "payLoad":data[i]};
     
     for(var j = 0; j < flightServers.length; j++) {
       client.post(
         flightServers[j] + '/api/flights/search',
-        data[i],
+        dataToSend,
         function (error, response, body) {
+          count += 1;  
+
+          console.log(body)
             if (!error && response.statusCode == 201) {
-              currResult = currResult.concat(body)
-              console.log(j)
+              var server = response.request.uri.host;
+              var id = body.id;
+              if(!result[id]) result[id] = {};
+              result[id][server] = body.payLoad;
+              if(count = data.length * flightServers.length) 
+                res.json(result);
             } else {
-              console.log(error);
+              console.log('error ' + error);
             }
         }
     );
     }
-    resp.push(currResult);
-    // console.log(currResult);
-    console.log("the end")
   }
-
-
-  // res.send(JSON.stringify(resp));
-  res.json(resp);
-
 }
