@@ -12,6 +12,7 @@ router.put('/:id', controller.update);
 // router.patch('/:id', controller.update);
 // router.delete('/:id', controller.destroy);
 
-router.post('/flight', controller.flightSearch);
+router.post('/flight/search', controller.flightSearch);
+router.post('/flight/book', controller.flightBook);
 
 module.exports = router;
