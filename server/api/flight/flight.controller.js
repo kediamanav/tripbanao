@@ -1,5 +1,4 @@
-/**
- * Using Rails-like standard naming convention for endpoints.
+/* Using Rails-like standard naming convention for endpoints.
  * GET     /api/flights              ->  index
  * POST    /api/flights              ->  create
  * GET     /api/flights/:id          ->  show
@@ -19,10 +18,11 @@ function handleError(res, statusCode) {
   };
 }
 
-function responseWithResult(res, statusCode) {
+function responseWithResult(res, statusCode, requestId) {
   statusCode = statusCode || 200;
   return function(entity) {
     if (entity) {
+      entity = {'id': requestId, 'payLoad': entity};
       res.status(statusCode).json(entity);
     }
   };
@@ -36,28 +36,6 @@ function handleEntityNotFound(res) {
       return null;
     }
     return entity;
-  };
-}
-
-function saveUpdates(updates) {
-  return function(entity) {
-    var updated = _.merge(entity, updates);
-    return updated.saveAsync()
-      .spread(function(updated) {
-        return updated;
-      });
-  };
-}
-
-function removeEntity(res) {
-  console.log("removing")
-  return function(entity) {
-    if (entity) {
-      return entity.removeAsync()
-        .then(function() {
-          res.status(204).end();
-        });
-    }
   };
 }
 
@@ -79,25 +57,40 @@ exports.show = function(req, res) {
 
 // Creates a new Flight in the DB
 exports.search = function(req, res) {
-  console.log('inside flight module' + req.body)
-  var jsonRequest = req.body
-  console.log((new Date(jsonRequest.date)).toDateString().split()[0])
+  console.log(req.body);
+  var jsonRequest = req.body.payLoad;
   Flight.findAsync({ 
-    'origin': jsonRequest.from, 
-    'destination': jsonRequest.to,
-    'runningDays': { $in: [(new Date(jsonRequest.date)).toDateString().split()[0]]}
-    // {'seatsAvailable': { 
-    //     $in: [{ 'date': jsonRequest.date, 'numberOfSeats': 5 }]}}
+    'from': jsonRequest.from, 
+    'to': jsonRequest.to,
+    'runningDays': { $in: [(new Date(jsonRequest.date)).toDateString().split(' ')[0]]},
+    // 'seatsAvailable': { 
+    //     $elemMatch: { 'date': new Date(jsonRequest.date), 'numberOfSeats': 67 } }
     })
-    .then(responseWithResult(res, 201))
+
+    .then(responseWithResult(res, 201,req.body.id))
     .catch(handleError(res));
 };
 
-// Updates an existing Flight in the DB
+// Inserts a existing Flight in the DB
 exports.insert = function(req, res) {
   Flight.createAsync(req.body)
     .then(responseWithResult(res))
     .catch(handleError(res));
+};
+
+exports.update = function(req, res) {
+  if (req.body._id) {
+    delete req.body._id;
+  }
+
+  var jsonRequest = req.body;
+  for(var i = 0; i < jsonRequest.seatsAvailable.length; i++)
+    jsonRequest.seatsAvailable[i].date = new Date(jsonRequest.seatsAvailable[i].date).toDateString();
+  
+  Flight.update({'flightNo': jsonRequest.flightNo }, { $set: {'seatsAvailable': jsonRequest.seatsAvailable} }, function (err, tank) {
+    if (err) return handleError(err);
+    res.send(tank);
+  });
 };
 
 // Deletes a Flight from the DB
