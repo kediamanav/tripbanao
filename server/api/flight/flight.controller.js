@@ -19,14 +19,14 @@ function handleError(res, statusCode) {
   };
 }
 
-function responseWithResult(res, statusCode) {
+function responseWithResult(res, statusCode, requestId) {
   statusCode = statusCode || 200;
   return function(entity) {
     if (entity) {
+      entity = {'id': requestId, 'payLoad': entity};
       res.status(statusCode).json(entity);
     }
   };
-}
 
 function handleEntityNotFound(res) {
   return function(entity) {
@@ -79,16 +79,17 @@ exports.show = function(req, res) {
 
 // Creates a new Flight in the DB
 exports.search = function(req, res) {
-  console.log(req.body)
-  var jsonRequest = req.body
+  console.log(req.body);
+  var jsonRequest = req.body.payLoad;
   Flight.findAsync({ 
     'from': jsonRequest.from, 
     'to': jsonRequest.to,
     'runningDays': { $in: [(new Date(jsonRequest.date)).toDateString().split(' ')[0]]},
     // 'seatsAvailable': { 
-    //     $in: [{ 'date': jsonRequest.date, 'numberOfSeats': 5 }]}
+    //     $elemMatch: { 'date': new Date(jsonRequest.date), 'numberOfSeats': 67 } }
     })
-    .then(responseWithResult(res, 201))
+
+    .then(responseWithResult(res, 201,req.body.id))
     .catch(handleError(res));
 };
 

@@ -35,7 +35,7 @@ module.exports = function (grunt) {
     },
     express: {
       options: {
-        port: process.env.PORT || 9000
+        port: grunt.option('port') || 9000 //process.env.PORT || 9000
       },
       dev: {
         options: {
