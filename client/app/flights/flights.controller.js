@@ -14,8 +14,8 @@ angular.module('tripbanaoApp')
         $scope.loading = false;
         console.log("Done successfully");
 
-        $scope.flights = value;
-        /*
+        // $scope.flights = value;
+        
         for(var i=0; i< value.length;i++){
             var temp = Object.keys(value[i]);
             console.log(temp);
@@ -25,7 +25,7 @@ angular.module('tripbanaoApp')
                     $scope.flights.push(value[i][temp[j]][k]);
                 }
             }
-        }*/
+        }
     });
 
     $scope.bookFlight = function(data){
