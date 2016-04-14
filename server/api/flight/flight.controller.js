@@ -79,7 +79,7 @@ exports.show = function(req, res) {
 
 // Creates a new Flight in the DB
 exports.search = function(req, res) {
-  console.log(req.body)
+  console.log('inside flight module' + req.body)
   var jsonRequest = req.body
   console.log((new Date(jsonRequest.date)).toDateString().split()[0])
   Flight.findAsync({ 
