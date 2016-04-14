@@ -95,29 +95,32 @@ exports.update = function(req, res) {
 	console.log(req.body);
 
 	var flights = [{
-		"name":"emirates",
+		"companyName":"emirates",
 		"from":"kolkata",
 		"to":"chicago",
-		"from_date": "8 aug, 20:30",
-		"to_date": "9 aug, 15:30",
+		"departureTime": "8 aug, 20:30",
+		"arrivalTime": "9 aug, 15:30",
 		"price": "47339",
-		"duration": "29 hrs"
+		"duration": "29 hrs",
+		"seatsAvailable" : 2
 	},{
-		"name":"air india",
+		"companyName":"air india",
 		"from":"kolkata",
 		"to":"chicago",
-		"from_date": "8 aug, 20:30",
-		"to_date": "9 aug, 15:30",
+		"departureTime": "8 aug, 20:30",
+		"arrivalTime": "9 aug, 15:30",
 		"price": "41339",
-		"duration": "24 hrs"
+		"duration": "24 hrs",
+		"seatsAvailable" : 5
 	},{
-		"name":"ethiad",
+		"companyName":"ethiad",
 		"from":"kolkata",
 		"to":"chicago",
-		"from_date": "8 aug, 20:30",
-		"to_date": "9 aug, 15:30",
+		"departureTime": "8 aug, 20:30",
+		"arrivalTime": "9 aug, 15:30",
 		"price": "45339",
-		"duration": "32 hrs"
+		"duration": "32 hrs",
+		"seatsAvailable" : 1
 	},
 	];
 
@@ -261,6 +264,22 @@ export function flightHold(req, res) {
 
 			}
 			);
+}}
+
+// flight release
+export function flightRelease(req, res) {
+	console.log(req.body);
+	res.end();
+}	
+
+// flight pay
+export function flightPay(req, res) {
+	console.log(req.body);
+
+	var result = {
+		"result":true,
+		"id": "NF124NG"
 	}
 
+	res.json(result);
 }	

@@ -1,4 +1,3 @@
-
 'use strict';
 
 var _ = require('lodash');
@@ -59,12 +58,34 @@ function insertSeatAvailability(flightNo, date, numberOfSeats) {
   console.log(flightNo);
   console.log(date);
   console.log(numberOfSeats);
+  if (numberOfSeats < 0 ) return new Error("Number of Seats not available");
   var newData = {"date": date, "numberOfSeats": numberOfSeats};
 
   Flight.update({'flightNo': flightNo }, { $push: {'seatsAvailable': newData} }, function (err, res) {
     if (err) return err;
     console.log(res);
   });
+  console.log("inserted");
+
+}
+
+function updateSeatAvailability(flightNo, date, numberOfSeats, res) {
+  console.log("inserting");
+  console.log(flightNo);
+  console.log(date);
+  console.log(numberOfSeats);
+  if (numberOfSeats < 0 ) {
+    res.json({'success': 0});
+    return;
+  }
+  var newData = {"date": date, "numberOfSeats": numberOfSeats};
+
+  Flight.update({'flightNo': flightNo, 'seatsAvailable.date': date }, { $set: {'seatsAvailable.$.numberOfSeats': numberOfSeats} }, function (err, result) {
+    if (err) return err;
+    console.log(result);
+    res.json({'success': 1});
+  });
+  console.log("inserted");
 
 }
 
@@ -100,21 +121,18 @@ function sendSearchResult(id, jsonRequest, requestDate, flight, res){
   }
   res.json({'id': id, 'payLoad': result});
 }
-// Gets a list of Flights
-exports.index = function(req, res) {
-  console.log("In here");
-  Flight.findAsync()
-    .then(responseWithResult(res))
-    .catch(handleError(res));
-};
 
-// Gets a single Flight from the DB
-exports.show = function(req, res) {
-  Flight.findByIdAsync(req.params.id)
-    .then(handleEntityNotFound(res))
-    .then(responseWithResult(res))
-    .catch(handleError(res));
-};
+function holdFlightStatus(res, date, lessNumberOfSeats){
+  return function(entity){
+    if(entity){
+      console.log(entity[0]);
+      for(var i = 0; i < entity[0].seatsAvailable.length; i++)
+        if (entity[0].seatsAvailable[i].date.getTime() == date.getTime())
+          updateSeatAvailability(entity[0].flightNo, date, entity[0].seatsAvailable[i].numberOfSeats - lessNumberOfSeats, res);
+    }
+  }
+}
+
 
 // Creates a new Flight in the DB
 exports.search = function(req, res) {
@@ -138,6 +156,7 @@ exports.insert = function(req, res) {
     .catch(handleError(res));
 };
 
+//Updates the seatAvailabilityArray with a new array for debugging purposes
 exports.update = function(req, res) {
   if (req.body._id) {
     delete req.body._id;
@@ -153,3 +172,12 @@ exports.destroy = function(req, res) {
     .then(removeEntity(res))
     .catch(handleError(res));
 };
+
+exports.hold = function(req, res) {
+  
+  var jsonRequest = req.body.payLoad;
+  var requestDate = new Date(jsonRequest.date);
+  
+  Flight.findAsync({ 'flightNo': jsonRequest.flightNo})
+    .then(holdFlightStatus(res, requestDate, jsonRequest.numberOfSeats));
+}

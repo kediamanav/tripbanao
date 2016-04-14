@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('tripbanaoApp')
-  .controller('FlightbookCtrl',['$scope', '$location', '$window', 'FlightPay', 'FlightBook', 'FlightDetail', function ($scope, $location, $window, FlightPay, FlightBook, FlightDetail) {
+  .controller('FlightbookCtrl',['$scope', '$location', 'FlightBook', 'FlightDetail', 'BookingDetail', '$interval', '$window', 'FlightRelease', function ($scope, $location, FlightBook, FlightDetail, BookingDetail, $interval, $window, FlightRelease) {
     
   	$scope.loading =true;
   	$scope.text = "Loading...";
@@ -9,11 +9,15 @@ angular.module('tripbanaoApp')
     $scope.fl = FlightDetail.getFlight();
     console.log($scope.fl);
 
+    $scope.user = {};
+    $scope.timer = 10;
+
     FlightBook.book($scope.fl, function success(value){
     	//value==true;
-        if(value==true){
+        if(value.result==true){
         	console.log("Go ahead with the booking");
         	$scope.loading = false;
+        	$scope.user.id = value.id;
         }
         else{
         	console.log("Cannot book");
@@ -21,11 +25,43 @@ angular.module('tripbanaoApp')
         }
     });
 
-    $scope.payFlight = function(data){
-        console.log(data);
+    var stop = $interval(function() {
+        if ($scope.timer > 0) {
+        	$scope.timer = $scope.timer-1;
+        } else {
+          $scope.stopTime();
+        }
+      }, 1000);
 
-        FlightPay.book($scope.fl, function success(value){
-        	console.log(value);
-	    });
+    $scope.stopTime = function() {
+      if (angular.isDefined(stop)) {
+        $interval.cancel(stop);
+        stop = undefined;
+
+        FlightRelease.release($scope.user);
+
+        if($window.confirm("Time expired. Please try again"))
+        	$location.path("/");
+        else
+        	$location.path("/");
+      }
     };
+
+    $scope.destroyTimer = function(){
+    	if (angular.isDefined(stop)) {
+	        $interval.cancel(stop);
+	        stop = undefined;
+	    }
+    }
+
+    $scope.payFlight = function(){
+        FlightDetail.putFlight($scope.fl);
+        BookingDetail.putUser($scope.user);
+        $location.path("/bookresult");
+    };
+
+    $scope.$on('$destroy', function() {
+      // Make sure that the interval is destroyed too
+      $scope.destroyTimer();
+    });
   }]);
