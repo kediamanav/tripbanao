@@ -57,7 +57,7 @@ angular.module('tripbanaoApp')
     };
 
     $scope.flight = [];
-    $scope.type = 1;
+    $scope.flight_type = 1;
 
     $scope.hotel = {};
     $scope.hotel.count=1;
@@ -81,7 +81,17 @@ angular.module('tripbanaoApp')
 
     $scope.searchFlights = function(){
 
-      console.log($scope.flight);
+      //console.log($scope.flight);
+      if($scope.flight[0].return_date){
+
+        $scope.flight.push({
+          "to": $scope.flight[0].from,
+          "from": $scope.flight[0].to,
+          "count": $scope.flight[0].count,
+          "date": $scope.flight[0].return_date
+        });
+      }
+
       FlightDetail.putFlight($scope.flight);
 
       $location.path("/flights");

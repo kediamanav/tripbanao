@@ -17,18 +17,21 @@
 	        <th>From</th>
 	        <th>Duration</th>
 	        <th>To</th>
+	        <th>Seats Left</th>
 	        <th>Price</th>
 	        <th></th>
 	      </tr>
 	    </thead>
 	    <tbody>
 			<tr ng-repeat="flight in flights">
-		        <td>{{flight.name}}</td>
-		        <td>{{flight.from}} <br> {{flight.from_date}} </td>
+		        <td>{{flight.companyName}} <br> {{flight.flightNo}}</td>
+		        <td>{{flight.from}} <br> {{flight.departureTime}} </td>
 		        <td>{{flight.duration}}</td>
-		        <td>{{flight.to}} <br> {{flight.to_date}}</td>
+		        <td>{{flight.to}} <br> {{flight.arrivalTime}}</td>
+		        <td>{{flight.seatsAvailable}}</td>
 		        <td>{{flight.price}}</td>
-		        <td> <input type="submit" class="btn btn-danger" value="Book"/> </td>
+		        <td> <button type="button" ng-click="bookFlight(flight)" class="btn btn-danger" value="Book">Book</button>
+		        </td>
 		    </tr>
 	    </tbody>
 	</table>

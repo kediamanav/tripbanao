@@ -1,45 +1,37 @@
 'use strict';
 
 angular.module('tripbanaoApp')
-  .controller('FlightsCtrl',['$scope', 'Travel', 'FlightDetail', function ($scope, Travel, FlightDetail) {
+  .controller('FlightsCtrl',['$scope', '$location', 'Travel', 'FlightDetail', function ($scope, $location, Travel, FlightDetail) {
 
     $scope.loading =true;
-
-    /*$scope.flights = [{
-    		"name":"emirates",
-    		"from":"kolkata",
-    		"to":"chicago",
-    		"from_date": "8 aug, 20:30",
-    		"to_date": "9 aug, 15:30",
-    		"price": "47339",
-    		"duration": "29 hrs"
-    	},{
-    		"name":"air india",
-    		"from":"kolkata",
-    		"to":"chicago",
-            "from_date": "8 aug, 20:30",
-            "to_date": "9 aug, 15:30",
-    		"price": "41339",
-    		"duration": "24 hrs"
-    	},{
-    		"name":"ethiad",
-    		"from":"kolkata",
-    		"to":"chicago",
-            "from_date": "8 aug, 20:30",
-            "to_date": "9 aug, 15:30",
-    		"price": "45339",
-    		"duration": "32 hrs"
-    	},
-    ];*/
 
     $scope.fl = FlightDetail.getFlight();
     console.log($scope.fl);
 
     Travel.update($scope.fl, function success(value){
+        $scope.flights = [];
+
         $scope.loading = false;
-        $scope.flights = value;
         console.log("Done successfully");
-        console.log(value);
+
+        $scope.flights = value;
+        /*
+        for(var i=0; i< value.length;i++){
+            var temp = Object.keys(value[i]);
+            console.log(temp);
+            for(var j=0;j<temp.length; j++){
+                for(var k=0;k<value[i][temp[j]].length; k++){
+                    console.log(value[i][temp[j]][k]);
+                    $scope.flights.push(value[i][temp[j]][k]);
+                }
+            }
+        }*/
     });
+
+    $scope.bookFlight = function(data){
+        console.log(data);
+        FlightDetail.putFlight($scope.flight);
+        $location.path("/flightbook");
+    };
 
   }]);

@@ -1,10 +1,3 @@
-/* Using Rails-like standard naming convention for endpoints.
- * GET     /api/flights              ->  index
- * POST    /api/flights              ->  create
- * GET     /api/flights/:id          ->  show
- * PUT     /api/flights/:id          ->  update
- * DELETE  /api/flights/:id          ->  destroy
- */
 
 'use strict';
 
@@ -26,7 +19,7 @@ function responseWithResult(res, statusCode, requestId) {
       res.status(statusCode).json(entity);
     }
   };
-}
+};
 
 function handleEntityNotFound(res) {
   return function(entity) {
@@ -37,8 +30,76 @@ function handleEntityNotFound(res) {
     }
     return entity;
   };
+};
+
+function removeEntity(res) {
+  console.log("removing");
+  return function(entity) {
+    if (entity) {
+      return entity.removeAsync()
+        .then(function() {
+          res.status(204).end();
+        });
+    }
+  };
+};
+
+function updateSeatAvailableArray(req,res) {
+  var jsonRequest = req.body;
+  
+  Flight.update({'flightNo': jsonRequest.flightNo }, { $set: {'seatsAvailable': jsonRequest.seatsAvailable} }, function (err, tank) {
+    if (err) return handleError(err);
+    if (res) return res.json(tank);
+    else return tank;
+  });
+};
+
+function insertSeatAvailability(flightNo, date, numberOfSeats) {
+  console.log("inserting");
+  console.log(flightNo);
+  console.log(date);
+  console.log(numberOfSeats);
+  var newData = {"date": date, "numberOfSeats": numberOfSeats};
+
+  Flight.update({'flightNo': flightNo }, { $push: {'seatsAvailable': newData} }, function (err, res) {
+    if (err) return err;
+    console.log(res);
+  });
+
 }
 
+function sendSearchResult(id, jsonRequest, requestDate, flight, res){
+  var result = []
+  for(var i = 0; i < flight.length; i++){ //Checks if any pre-booking of the flight on that day
+    var numSeats = 0; // Assuming no pre-booking
+
+    //Check if the entry for that particular date is present.
+    for(var j = 0; j < flight[i].seatsAvailable.length; j++){
+      if(flight[i].seatsAvailable[j].date.getTime() == requestDate.getTime())
+        numSeats = flight[i].seatsAvailable[j].numberOfSeats;
+    }
+
+    //If the entry is not present then push it in the database and update numberOfSeats to send.
+    if(numSeats == 0){
+      insertSeatAvailability(flight[i].flightNo, new Date(jsonRequest.date), 5);
+      numSeats = 5;
+    }
+
+    var tempResult = {
+      'from': jsonRequest.from,
+      'to': jsonRequest.to,
+      'arrivalTime': flight[i].arrivalTime,
+      'departureTime': flight[i].departureTime,
+      'flightNo': flight[i].flightNo,
+      'companyName': flight[i].companyName,
+      'price': flight[i].price,
+      'duration': flight[i].duration,
+      'seatsAvailable': numSeats
+    };
+    result.push(tempResult);
+  }
+  res.json({'id': id, 'payLoad': result});
+}
 // Gets a list of Flights
 exports.index = function(req, res) {
   console.log("In here");
@@ -57,18 +118,17 @@ exports.show = function(req, res) {
 
 // Creates a new Flight in the DB
 exports.search = function(req, res) {
-  console.log(req.body);
+  
   var jsonRequest = req.body.payLoad;
+  var requestDate = new Date(jsonRequest.date);
+  
   Flight.findAsync({ 
     'from': jsonRequest.from, 
     'to': jsonRequest.to,
-    'runningDays': { $in: [(new Date(jsonRequest.date)).toDateString().split(' ')[0]]},
-    // 'seatsAvailable': { 
-    //     $elemMatch: { 'date': new Date(jsonRequest.date), 'numberOfSeats': 67 } }
-    })
-
-    .then(responseWithResult(res, 201,req.body.id))
-    .catch(handleError(res));
+    'runningDays': { $in: [requestDate.toDateString().split(' ')[0]]}}, function(err, flight){
+        if (err) throw err;
+        sendSearchResult(req.body.id, jsonRequest, requestDate, flight, res);
+    });
 };
 
 // Inserts a existing Flight in the DB
@@ -83,14 +143,7 @@ exports.update = function(req, res) {
     delete req.body._id;
   }
 
-  var jsonRequest = req.body;
-  for(var i = 0; i < jsonRequest.seatsAvailable.length; i++)
-    jsonRequest.seatsAvailable[i].date = new Date(jsonRequest.seatsAvailable[i].date).toDateString();
-  
-  Flight.update({'flightNo': jsonRequest.flightNo }, { $set: {'seatsAvailable': jsonRequest.seatsAvailable} }, function (err, tank) {
-    if (err) return handleError(err);
-    res.send(tank);
-  });
+  return updateSeatAvailableArray(req, res);
 };
 
 // Deletes a Flight from the DB

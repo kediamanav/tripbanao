@@ -11,16 +11,18 @@ var seatAvailableObj = new Schema({
 });
 
 var FlightSchema = new Schema({
+  companyName: String,
   flightNo: String,
   from: String,
   to: String,
   departureTime: { type: Date, default: Date.now },
   arrivalTime: { type: Date, default: Date.now },
-  duration: { type: Number, default: 2 },
   runningDays:{ type:[String], default: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'] }, // An array of days when the flight runs weekly. [Mon, Tues, Wed]
-  seatsAvailable: [seatAvailableObj] //Array to store seatAvailableObj Schema.
+  seatsAvailable:{ type:[seatAvailableObj], default: [] }, //Array to store seatAvailableObj Schema.
+  price: { type: Number, default: 2000 },
+  duration: { type: Number, default: 2.35 },
 });
 
-FlightSchema.index({flightNo: 1, unique: true});
+FlightSchema.index({companyName: 1, flightNo: 1, unique: true});
 
 module.exports = mongoose.model('Flight', FlightSchema);
