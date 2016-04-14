@@ -11,13 +11,19 @@ angular.module('tripbanaoApp')
   .factory('FlightBook',['$resource', function ($resource) {
 
     return $resource('/api/agents/flight/book',null,{
-      'book': {method: 'POST', isArray: true}
+      'book': {method: 'POST'}
     });
   }])
   .factory('FlightPay',['$resource', function ($resource) {
 
     return $resource('/api/agents/flight/pay',null,{
-      'pay': {method: 'POST', isArray: true}
+      'pay': {method: 'POST'}
+    });
+  }])
+  .factory('FlightRelease',['$resource', function ($resource) {
+
+    return $resource('/api/agents/flight/release',null,{
+      'release': {method: 'POST'}
     });
   }])
   .service('FlightDetail', function () {
@@ -52,5 +58,22 @@ angular.module('tripbanaoApp')
     return{
       putHotel : putHotel,
       getHotel : getHotel
+    };
+  })
+  .service('BookingDetail', function () {
+    var user = {};
+
+    var putUser = function(data){
+      user = data;
+      console.log(user);
+    }
+
+    var getUser = function(){
+      return user;
+    }
+
+    return{
+      putUser : putUser,
+      getUser : getUser
     };
   });

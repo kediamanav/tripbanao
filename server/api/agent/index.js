@@ -14,5 +14,7 @@ router.post('/', controller.update);
 
 router.post('/flight/search', controller.flightSearch);
 router.post('/flight/book', controller.flightBook);
+router.post('/flight/pay', controller.flightPay);
+router.post('/flight/release', controller.flightRelease);
 
 module.exports = router;
