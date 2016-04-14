@@ -237,8 +237,8 @@ export function flightHold(req, res) {
 
 	for(var i = 0; i < data.length; i++) {
 		var dataToSend = {'flightNo': data[i].flightNo, 
-		'DepartureTime': data[i].departureTime, 
-		'numberOfSeats': data[i].numberOfSeats};
+		'departureTime': data[i].departureTime, 
+		'numberOfSeats': data[i].seatsAvailed};
 
 		dbData.push(dataToSend);
 
@@ -247,6 +247,9 @@ export function flightHold(req, res) {
 			'/api/flights/hold',
 			dataToSend,
 			function(err, response, body){
+
+				console.log("Reply received");
+
 				lock.writeLock(function(release){
 					count += 1;
 					release();
@@ -260,6 +263,7 @@ export function flightHold(req, res) {
 					release();
 				});
 				if(c == data.length){
+					console.log("All requests received");
 					if(okay == 1) {
 						flightDB.createAsync(dbData)
 							.then(respondToManav(res, true));
