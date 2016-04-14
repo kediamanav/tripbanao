@@ -26,6 +26,23 @@
   background:black;
   display: inline;
   margin: 0 auto;
-  opacity: 0.1;
   color: black;
+}
+
+
+#wrapper {
+     width: 1205px;
+     margin: 0 auto;
+}
+#lrectange, #rrectangle { 
+    min-height: 450px;
+    color: black;
+}
+#lrectangle {
+     width: 600px;
+     float:left;
+}
+#rrectangle {
+     width: 600px;
+     float:left;
 }
