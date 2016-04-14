@@ -28,15 +28,15 @@
         <!-- Type of flight -->
         <div class="form-group">
           <label class="col-md-3 col-md-offset-1 control-label">
-            <input type="radio" ng-model="type" value="1"> One-way
+            <input type="radio" ng-model="flight_type" value="1"> One-way
           </label>
 
           <label class="col-md-offset-1 control-label">
-            <input type="radio" ng-model="type" value="2"> Round-Trip
+            <input type="radio" ng-model="flight_type" value="2"> Round-Trip
           </label>
 
           <label class="col-md-offset-1 control-label">
-            <input type="radio" ng-model="type" value="3"> Multi-city
+            <input type="radio" ng-model="flight_type" value="3"> Multi-city
           </label>
         </div>
 
@@ -63,7 +63,7 @@
             <div class="col-md-3">
               <p class="input-group">
                 <!--min-date="minDate" max-date="maxDate" -->
-                <input type="text" required class="form-control" datepicker-popup="shortDate" ng-model="flight[$index].departure_date" is-open="popup[0][$index].opened" datepicker-options="dateOptions" ng-required="true" close-text="Close"/>
+                <input type="text" required class="form-control" datepicker-popup="shortDate" ng-model="flight[$index].date" is-open="popup[0][$index].opened" datepicker-options="dateOptions" ng-required="true" close-text="Close"/>
                 <span class="input-group-btn">
                   <button type="button" class="btn btn-default" ng-click="open(0,$index)"><i class="glyphicon glyphicon-calendar"></i></button>
                 </span>
@@ -72,7 +72,7 @@
           </div>
 
           <!--Return date -->
-          <div class="form-group" ng-if="type==2">
+          <div class="form-group" ng-if="flight_type==2">
             <label for="return_date" class="col-md-offset-2 col-md-2 control-label">Return Date</label>
             <div class="col-md-3">
               <p class="input-group">
@@ -100,7 +100,7 @@
           <div class="col-md-offset-4 col-md-3">
             <input type="submit" class="btn btn-warning" value="Search Flights"/>
           </div>
-          <div class="col-md-2" ng-if="type==3">
+          <div class="col-md-2" ng-if="flight_type==3">
             <button type="button" ng-click="increaseCity()" class="btn btn-primary control-label" value="Add city">Add city</button>
           </div>
         </div> 
