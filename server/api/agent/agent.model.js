@@ -1,7 +1,7 @@
 'use strict';
 
 var mongoose = require('bluebird').promisifyAll(require('mongoose'));
-var ShortId = require('mongoose-shortid');
+//var ShortId = require('mongoose-shortid');
 var Schema = mongoose.Schema;
 
 var AgentSchema = new Schema({
@@ -19,7 +19,7 @@ var flightData = new Schema({
 });
 
 var flightDB = new Schema({
-	_id: ShortId,
+	//_id: ShortId,
 	data: [flightData]
 });
 
