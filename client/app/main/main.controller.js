@@ -2,8 +2,20 @@
 
 angular.module('tripbanaoApp')
   .controller('MainCtrl',['$scope', '$location', 'FlightDetail','HotelDetail', function($scope, $location, FlightDetail, HotelDetail) {
-    $scope.awesomeThings = [];
+    
+    $scope.panel=0;
 
+    var i,j;
+    $scope.popup = [];
+    for(i=0;i<2;i++){
+      $scope.popup[i] = [];
+      for(j=0;j<5;j++){
+        $scope.popup[i][j] = {
+          opened: false
+        }
+      }
+    }
+    /*
     $scope.popup1 = {
       opened: false
     };
@@ -11,6 +23,7 @@ angular.module('tripbanaoApp')
     $scope.popup2 = {
       opened: false
     };
+    */
 
     $scope.popup3 = {
       opened: false
@@ -20,6 +33,7 @@ angular.module('tripbanaoApp')
       opened: false
     };
 
+    /*
     $scope.open1 = function() {
       $scope.popup1.opened = true;
     };
@@ -27,6 +41,7 @@ angular.module('tripbanaoApp')
     $scope.open2 = function() {
       $scope.popup2.opened = true;
     };
+    */
 
     $scope.open3 = function() {
       $scope.popup3.opened = true;
@@ -36,8 +51,12 @@ angular.module('tripbanaoApp')
       $scope.popup4.opened = true;
     };
 
-    $scope.flight = {};
-    $scope.flight.count=1;
+    $scope.open = function(i,j) {
+      $scope.popup[i][j].opened = true;
+      console.log($scope.popup[i][j]);
+    };
+
+    $scope.flight = [];
     $scope.type = 1;
 
     $scope.hotel = {};
@@ -75,5 +94,9 @@ angular.module('tripbanaoApp')
 
       $location.path("/hotels");
     };
+
+    $scope.changeTab =  function(){
+      $scope.panel = 1- $scope.panel;
+    }
     
   }]);
