@@ -215,11 +215,6 @@ export function flightSearch(req, res) {
 }
 
 
-export function flightRelease(arr){
-	console.log('in release ' + req.body);
-
-}
-
 
 // holding flight seats for ttl time
 export function flightHold(req, res) {
