@@ -3,8 +3,7 @@
 angular.module('tripbanaoApp')
   .factory('Travel',['$resource', function ($resource) {
 
-    //Change here to /api/agents/flight
-    return $resource('/api/agents/',null,{
+    return $resource('/api/agents/flight/search',null,{
       'update': {method: 'POST', isArray: true}
     });
   }])

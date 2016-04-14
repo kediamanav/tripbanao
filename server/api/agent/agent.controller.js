@@ -167,7 +167,8 @@ exports.destroy = function(req, res) {
 // Queries all flight companies 
 export function flightSearch(req, res) {
 
-	console.log('in search ' + req.body);
+	console.log('in search ');
+	console.log(req.body);
 
 	var data = req.body;
 	var resp = [];
@@ -179,8 +180,8 @@ export function flightSearch(req, res) {
 
 		var dataToSend = {"id": i, "payLoad":data[i]};
 
-		for(var j = 0; j < keys(flightServers).length; j++) {
-			var client = request.createClient(values(flightServers)[j]);
+		for(var j = 0; j < Object.keys(flightServers).length; j++) {
+			var client = request.createClient(Object.values(flightServers)[j]);
 			client.post(
 				'/api/flights/search',
 				dataToSend,
@@ -202,7 +203,7 @@ export function flightSearch(req, res) {
 							c = count;
 							release();
 						});
-						if(c == data.length * keys(flightServers).length) {
+						if(c == data.length * Object.keys(flightServers).length) {
 							res.json(result);
 						}
 					} else {
@@ -214,8 +215,6 @@ export function flightSearch(req, res) {
 	}
 }
 
-
-
 function respondToManav(res, result){
 	return function(entity) {
 		var id = entity._id;
@@ -225,10 +224,10 @@ function respondToManav(res, result){
 	}
 }
 
-
 // holding flight seats for ttl time
 export function flightHold(req, res) {
-	console.log('in hold ' + req.body);
+	console.log('in hold ');
+	console.log(req.body);
 
 	var data = req.body;
 	var lock = new ReadWriteLock();
