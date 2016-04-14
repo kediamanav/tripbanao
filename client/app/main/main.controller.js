@@ -43,9 +43,10 @@ angular.module('tripbanaoApp')
     $scope.hotel = {};
     $scope.hotel.count=1;
     $scope.hotel.nights=1;
+    $scope.hotel.rooms=1;
 
-    $scope.cityCount =0 ;
-    $scope.roomCount =0 ;
+    $scope.cityCount =1 ;
+    $scope.roomCount =1 ;
 
     $scope.increaseCity = function(){
       $scope.cityCount = $scope.cityCount + 1;
@@ -53,6 +54,10 @@ angular.module('tripbanaoApp')
 
     $scope.increaseRoom = function(){
       $scope.roomCount = $scope.roomCount + 1;
+    };
+
+    $scope.getNumber = function(num) {
+        return new Array(num);   
     };
 
     $scope.searchFlights = function(){
