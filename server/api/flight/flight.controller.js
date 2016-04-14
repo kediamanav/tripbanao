@@ -1,5 +1,4 @@
-/**
- * Using Rails-like standard naming convention for endpoints.
+/* Using Rails-like standard naming convention for endpoints.
  * GET     /api/flights              ->  index
  * POST    /api/flights              ->  create
  * GET     /api/flights/:id          ->  show
@@ -27,6 +26,7 @@ function responseWithResult(res, statusCode, requestId) {
       res.status(statusCode).json(entity);
     }
   };
+}
 
 function handleEntityNotFound(res) {
   return function(entity) {
@@ -36,28 +36,6 @@ function handleEntityNotFound(res) {
       return null;
     }
     return entity;
-  };
-}
-
-function saveUpdates(updates) {
-  return function(entity) {
-    var updated = _.merge(entity, updates);
-    return updated.saveAsync()
-      .spread(function(updated) {
-        return updated;
-      });
-  };
-}
-
-function removeEntity(res) {
-  console.log("removing")
-  return function(entity) {
-    if (entity) {
-      return entity.removeAsync()
-        .then(function() {
-          res.status(204).end();
-        });
-    }
   };
 }
 
@@ -98,6 +76,21 @@ exports.insert = function(req, res) {
   Flight.createAsync(req.body)
     .then(responseWithResult(res))
     .catch(handleError(res));
+};
+
+exports.update = function(req, res) {
+  if (req.body._id) {
+    delete req.body._id;
+  }
+
+  var jsonRequest = req.body;
+  for(var i = 0; i < jsonRequest.seatsAvailable.length; i++)
+    jsonRequest.seatsAvailable[i].date = new Date(jsonRequest.seatsAvailable[i].date).toDateString();
+  
+  Flight.update({'flightNo': jsonRequest.flightNo }, { $set: {'seatsAvailable': jsonRequest.seatsAvailable} }, function (err, tank) {
+    if (err) return handleError(err);
+    res.send(tank);
+  });
 };
 
 // Deletes a Flight from the DB
