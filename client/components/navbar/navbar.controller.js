@@ -5,12 +5,6 @@ angular.module('tripbanaoApp')
     $scope.menu = [{
       'title': 'Home',
       'link': '/'
-    },{
-      'title': 'Flights',
-      'link': '/flights'
-    },{
-      'title': 'Hotels',
-      'link': '/hotels'
     }];
 
     $scope.isCollapsed = true;
