@@ -89,7 +89,8 @@ angular.module('tripbanaoApp')
       var temp = {
         "id": $scope.bookingid
       }
-      BookingCancel.cancel($scope.temp, function success(value){
+
+      BookingCancel.cancel(temp, function success(value){
         console.log("Booking cancelled");
         $window.alert("Booking succesfully cancelled")
       });

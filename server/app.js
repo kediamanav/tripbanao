@@ -11,49 +11,12 @@ var express = require('express');
 var mongoose = require('mongoose');
 var config = require('./config/environment');
 
-// Connect to MongoDB
-// mongoose.connect(config.mongo.uri, config.mongo.options);
-// mongoose.connection.on('error', function(err) {
-//   console.error('MongoDB connection error: ' + err);
-//   process.exit(-1);
-// });
-
-
-//================================
-
-
-
-// Connect to Replica Set
-
-var options = { 
-    server: { 
-        socketOptions: { 
-            keepAlive: 1000, 
-            connectTimeoutMS:30000, 
-            socketTimeoutMS:90000 } 
-        },
-    replset: {
-    	auto_reconnect:false,
-        socketOptions: { 
-            keepAlive: 1000, 
-            connectTimeoutMS : 30000 , 
-            socketTimeoutMS: 90000  
-        }, 
-        rs_name: 'rs0' 
-     } };
-
-var uri = "mongodb://localhost:27017,localhost:27018,localhost:27019/tripbanao-dev";
-
-// var uri = "mongodb://localhost:27018,localhost:27017/tripbanao-dev";
-
-mongoose.connect(uri, options);
+//Connect to MongoDB
+mongoose.connect(config.mongo.uri, config.mongo.options);
 mongoose.connection.on('error', function(err) {
   console.error('MongoDB connection error: ' + err);
   process.exit(-1);
 });
-
-//====================================
-
 
 
 // Populate databases with sample data
