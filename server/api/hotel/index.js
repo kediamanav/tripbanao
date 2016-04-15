@@ -5,11 +5,11 @@ var controller = require('./hotel.controller');
 
 var router = express.Router();
 
-router.get('/', controller.index);
-router.get('/:id', controller.show);
-router.post('/', controller.create);
-router.put('/:id', controller.update);
-router.patch('/:id', controller.update);
-router.delete('/:id', controller.destroy);
+router.post('/search', controller.search);
+router.post('/insert', controller.insert);
+router.post('/delete', controller.destroy);
+// router.post('/hold', controller.hold);
+// router.post('/cancel', controller.cancel);
+// router.post('/release', controller.cancel);
 
 module.exports = router;

@@ -163,7 +163,7 @@ function changeFlightSeatStatus(res, date, deltaNumberOfSeats){
 }
 
 
-// Creates a new Flight in the DB
+// Searches a new Flight in the DB
 exports.search = function(req, res) {
   
   var jsonRequest = req.body.payLoad;
