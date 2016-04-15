@@ -25,6 +25,12 @@ angular.module('tripbanaoApp')
       'release': {method: 'POST'}
     });
   }])
+  .factory('BookingCancel',['$resource', function ($resource) {
+
+    return $resource('/api/agents/flight/cancel',null,{
+      'cancel': {method: 'POST'}
+    });
+  }])
   .service('FlightDetail', function () {
   	var flight = [];
 

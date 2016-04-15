@@ -22,7 +22,6 @@ angular.module('tripbanaoApp')
         }
         else{
         	console.log("Cannot book");
-          $scope.loading = false;
   			  $scope.text = "Sorry, the seats have been taken, Please go back and select another flight";
         }
     });

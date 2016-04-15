@@ -43,14 +43,15 @@ angular.module('tripbanaoApp')
         
         if($scope.booked==$scope.flights.length)
             $location.path("/flightbook");
-
-        $scope.curFlights = [];
-        var temp = Object.keys($scope.flights[$scope.booked]);
-        console.log(temp);
-        for(var j=0;j<temp.length; j++){
-            for(var k=0;k<$scope.flights[$scope.booked][temp[j]].length; k++){
-                console.log($scope.flights[$scope.booked][temp[j]][k]);
-                $scope.curFlights.push($scope.flights[$scope.booked][temp[j]][k]);
+        else{
+            $scope.curFlights = [];
+            var temp = Object.keys($scope.flights[$scope.booked]);
+            console.log(temp);
+            for(var j=0;j<temp.length; j++){
+                for(var k=0;k<$scope.flights[$scope.booked][temp[j]].length; k++){
+                    console.log($scope.flights[$scope.booked][temp[j]][k]);
+                    $scope.curFlights.push($scope.flights[$scope.booked][temp[j]][k]);
+                }
             }
         }
     };
