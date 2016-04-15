@@ -132,6 +132,8 @@ function sendSearchResult(id, jsonRequest, requestDate, flight, res){
 
 function changeFlightSeatStatus(res, date, deltaNumberOfSeats){
   return function(entity){
+    console.log("change Flight Status");
+    console.log(entity);
     if(entity){
       //We get the value of findAsync in the 'entity' variable. This is an array.
       //Since the flightNo is given, there can be only 1 element in the array.
@@ -143,10 +145,16 @@ function changeFlightSeatStatus(res, date, deltaNumberOfSeats){
           
           if (entity[0].seatsAvailable[i].numberOfSeats < 0) // failed response
             return res.json({"success": 0});
-          else return entity[0].save() // If successful, save it in mongoDB and update the response variable.
-            .then(function(){
-              res.json({"success": 1});
-            });
+          else { 
+            if (entity[0].seatsAvailable[i].numberOfSeats > 5) entity[0].seatsAvailable[i].numberOfSeats = 5;
+            console.log("seats remaning");
+            console.log(entity[0].seatsAvailable[i].numberOfSeats);
+            return entity[0].save() // If successful, save it in mongoDB and update the response variable.
+              .then(function(){
+                console.log("change success");
+                res.json({"success": 1});
+              });
+          }
         }
       }
       res.json({"success": 0}); // if there are no dates. 
