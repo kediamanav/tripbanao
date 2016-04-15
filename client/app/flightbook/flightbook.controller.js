@@ -16,6 +16,7 @@ angular.module('tripbanaoApp')
 
     FlightBook.book($scope.temp, function success(value){
     	//value==true;
+        console.log(value);
         if(value.result==true){
         	console.log("Go ahead with the booking");
         	$scope.loading = false;
