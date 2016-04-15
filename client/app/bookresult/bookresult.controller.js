@@ -1,12 +1,11 @@
 'use strict';
 
 angular.module('tripbanaoApp')
-  .controller('BookresultCtrl', ['$scope', 'FlightPay', 'FlightDetail','BookingDetail', function ($scope, FlightPay, FlightDetail, BookingDetail) {
+  .controller('BookresultCtrl', ['$scope', 'FlightPay','UserDetail', function ($scope, FlightPay, UserDetail) {
     
   	$scope.text = "";
 
-    $scope.flight = FlightDetail.getFlight();
-    $scope.user = BookingDetail.getUser();
+    $scope.user = UserDetail.getUser();
 
     FlightPay.pay($scope.user, function success(value){
     	//value==true;

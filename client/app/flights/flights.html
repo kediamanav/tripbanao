@@ -23,7 +23,7 @@
 	      </tr>
 	    </thead>
 	    <tbody>
-			<tr ng-repeat="flight in flights">
+			<tr ng-repeat="flight in curFlights">
 		        <td>{{flight.companyName}} <br> {{flight.flightNo}}</td>
 		        <td>{{flight.from}} <br>{{flight.departureTime}} {{flight.date | myFilter | date: 'dd-MM-yyyy'}}</td>
 		        <td>{{flight.duration}}</td>

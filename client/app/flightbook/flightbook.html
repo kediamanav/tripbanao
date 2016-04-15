@@ -23,7 +23,7 @@
 				<h2>Flight Details</h2>
 				<table class="table table-striped">
 				    <tbody>
-				    	<tr>
+				    	<tr ng-repeat="fl in flights">
 					        <td>{{fl.companyName}} <br> {{flight.flightNo}}</td>
 					        <td>{{fl.from}} <br>{{fl.date | myFilter | date: 'dd-MM-yyyy'}} {{fl.departureTime}} </td>
 					        <td>-----> <br> {{fl.duration}} </td>
