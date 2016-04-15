@@ -6,9 +6,12 @@ angular.module('tripbanaoApp')
     $scope.loading =true;
 
     $scope.fl = FlightDetail.getFlight();
+    console.log("Before Pramesh function");
     console.log($scope.fl);
 
-    Travel.update($scope.fl, function success(value){
+    Travel.update($scope.fl, function success(value){  
+        console.log("After Pramesh function");
+        console.log($scope.fl);
         $scope.flights = [];
 
         $scope.loading = false;
