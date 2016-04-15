@@ -22,19 +22,12 @@
   margin-left: 15px;
 }
 
-#rectangle{
-  background:black;
-  display: inline;
-  margin: 0 auto;
-  color: black;
-}
-
 
 #wrapper {
      width: 1205px;
      margin: 0 auto;
 }
-#lrectangle, #rrectangle { 
+#lrectangle, #rrectangle, #mrectangle { 
     margin-top:0px;
     min-height: 450px;
     background-color: rgba(31, 31, 20,0.1);
@@ -42,11 +35,5 @@
     border: 1px solid gray;
     color: black;
     float:left;
-}
-
-#lrectangle {
-     width: 600px;
-}
-#rrectangle {
-     width: 600px;
+    width: 600px;
 }

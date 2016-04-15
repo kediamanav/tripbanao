@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('tripbanaoApp')
-  .controller('MainCtrl',['$scope', '$location', 'FlightDetail','HotelDetail', function($scope, $location, FlightDetail, HotelDetail) {
+  .controller('MainCtrl',['$scope', '$location', 'FlightDetail','HotelDetail','BookingCancel', function($scope, $location, FlightDetail, HotelDetail, BookingCancel) {
     
     $scope.panel=0;
 
@@ -15,15 +15,6 @@ angular.module('tripbanaoApp')
         }
       }
     }
-    /*
-    $scope.popup1 = {
-      opened: false
-    };
-
-    $scope.popup2 = {
-      opened: false
-    };
-    */
 
     $scope.popup3 = {
       opened: false
@@ -32,16 +23,6 @@ angular.module('tripbanaoApp')
     $scope.popup4 = {
       opened: false
     };
-
-    /*
-    $scope.open1 = function() {
-      $scope.popup1.opened = true;
-    };
-
-    $scope.open2 = function() {
-      $scope.popup2.opened = true;
-    };
-    */
 
     $scope.open3 = function() {
       $scope.popup3.opened = true;
@@ -103,6 +84,15 @@ angular.module('tripbanaoApp')
 
       $location.path("/flights");
     };
+
+    $scope.cancelBooking = function(){
+      var temp = {
+        "id": $scope.bookingid
+      }
+      BookingCancel.cancel($scope.temp, function success(value){
+        console.log("Booking cancelled");
+      });
+    }
 
     $scope.searchHotels = function(){
 

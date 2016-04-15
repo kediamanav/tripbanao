@@ -189,6 +189,29 @@
       </form>
     </div>
 
+    <!--Cancellation -->
+    <div id="mrectangle">
+
+      <center><h1 style="margin-bottom:30px">Cancel Your Flight/Hotel</h1></center>
+      <form class="form-horizontal" name="form" ng-submit="cancelBooking()">
+
+        <!--Booking ID -->
+        <div class="form-group">
+          <label for="from" class="col-md-2 col-md-offset-2 control-label">Booking ID</label>
+          <div class="col-md-4">
+            <input type="text" required ng-model="bookingid" name="from" class="form-control" placeholder="Type Booking ID"/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-md-offset-4 col-md-3">
+            <input type="submit" class="btn btn-danger" value="Cancel Booking"/>
+          </div>
+        </div> 
+
+      </form>
+    </div>
+
   </div>
 
 </div>
