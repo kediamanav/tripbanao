@@ -11,6 +11,7 @@ angular.module('tripbanaoApp')
     	//value==true;
         if(value.result==true){
         	console.log("Booking Successful");
+          console.log($scope.user);
         	$scope.text = "Dear " + $scope.user.name +", your booking has been successful. Your booking id is : "+$scope.user.id;
         }
         else{

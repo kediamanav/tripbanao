@@ -353,8 +353,7 @@ export function flightPay(req, res) {
 	console.log(req.body);
 
 	var result = {
-		"result":true,
-		"id": "NF124NG"
+		"result":true
 	}
 
 	res.json(result);
