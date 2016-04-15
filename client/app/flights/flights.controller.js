@@ -41,8 +41,9 @@ angular.module('tripbanaoApp')
         $scope.booked = $scope.booked +1;
 
         
-        if($scope.booked==$scope.flights.length)
+        if($scope.booked==$scope.flights.length){
             $location.path("/flightbook");
+        }
         else{
             $scope.curFlights = [];
             var temp = Object.keys($scope.flights[$scope.booked]);
