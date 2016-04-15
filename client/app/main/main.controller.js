@@ -93,8 +93,13 @@ angular.module('tripbanaoApp')
       }
 
       console.log("Inside searchFlights");
+
       console.log($scope.flight);
-      FlightDetail.putFlight($scope.flight);
+      FlightDetail.resetFlight();
+      
+      for(var i=0;i<$scope.flight.length;i++){
+        FlightDetail.putFlight($scope.flight[i]); 
+      }
 
       $location.path("/flights");
     };

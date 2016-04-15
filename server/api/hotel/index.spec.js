@@ -38,8 +38,8 @@ describe('Hotel API Router:', function() {
 
     it('should route to hotel.controller.index', function() {
       routerStub.get
-        .withArgs('/', 'hotelCtrl.index')
-        .should.have.been.calledOnce;
+                .withArgs('/', 'hotelCtrl.index')
+                .should.have.been.calledOnce;
     });
 
   });
@@ -48,8 +48,8 @@ describe('Hotel API Router:', function() {
 
     it('should route to hotel.controller.show', function() {
       routerStub.get
-        .withArgs('/:id', 'hotelCtrl.show')
-        .should.have.been.calledOnce;
+                .withArgs('/:id', 'hotelCtrl.show')
+                .should.have.been.calledOnce;
     });
 
   });
@@ -58,8 +58,8 @@ describe('Hotel API Router:', function() {
 
     it('should route to hotel.controller.create', function() {
       routerStub.post
-        .withArgs('/', 'hotelCtrl.create')
-        .should.have.been.calledOnce;
+                .withArgs('/', 'hotelCtrl.create')
+                .should.have.been.calledOnce;
     });
 
   });
@@ -68,8 +68,8 @@ describe('Hotel API Router:', function() {
 
     it('should route to hotel.controller.update', function() {
       routerStub.put
-        .withArgs('/:id', 'hotelCtrl.update')
-        .should.have.been.calledOnce;
+                .withArgs('/:id', 'hotelCtrl.update')
+                .should.have.been.calledOnce;
     });
 
   });
@@ -78,8 +78,8 @@ describe('Hotel API Router:', function() {
 
     it('should route to hotel.controller.update', function() {
       routerStub.patch
-        .withArgs('/:id', 'hotelCtrl.update')
-        .should.have.been.calledOnce;
+                .withArgs('/:id', 'hotelCtrl.update')
+                .should.have.been.calledOnce;
     });
 
   });
@@ -88,8 +88,8 @@ describe('Hotel API Router:', function() {
 
     it('should route to hotel.controller.destroy', function() {
       routerStub.delete
-        .withArgs('/:id', 'hotelCtrl.destroy')
-        .should.have.been.calledOnce;
+                .withArgs('/:id', 'hotelCtrl.destroy')
+                .should.have.been.calledOnce;
     });
 
   });

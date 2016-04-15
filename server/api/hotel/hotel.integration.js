@@ -1,7 +1,7 @@
 'use strict';
 
-var app = require('../..');
-import request from 'supertest';
+var app = require('../../app');
+var request = require('supertest');
 
 var newHotel;
 
@@ -15,7 +15,7 @@ describe('Hotel API:', function() {
         .get('/api/hotels')
         .expect(200)
         .expect('Content-Type', /json/)
-        .end((err, res) => {
+        .end(function(err, res) {
           if (err) {
             return done(err);
           }
@@ -40,7 +40,7 @@ describe('Hotel API:', function() {
         })
         .expect(201)
         .expect('Content-Type', /json/)
-        .end((err, res) => {
+        .end(function(err, res) {
           if (err) {
             return done(err);
           }
@@ -64,7 +64,7 @@ describe('Hotel API:', function() {
         .get('/api/hotels/' + newHotel._id)
         .expect(200)
         .expect('Content-Type', /json/)
-        .end((err, res) => {
+        .end(function(err, res) {
           if (err) {
             return done(err);
           }
@@ -85,7 +85,7 @@ describe('Hotel API:', function() {
   });
 
   describe('PUT /api/hotels/:id', function() {
-    var updatedHotel;
+    var updatedHotel
 
     beforeEach(function(done) {
       request(app)
@@ -122,7 +122,7 @@ describe('Hotel API:', function() {
       request(app)
         .delete('/api/hotels/' + newHotel._id)
         .expect(204)
-        .end((err, res) => {
+        .end(function(err, res) {
           if (err) {
             return done(err);
           }
@@ -134,7 +134,7 @@ describe('Hotel API:', function() {
       request(app)
         .delete('/api/hotels/' + newHotel._id)
         .expect(404)
-        .end((err, res) => {
+        .end(function(err, res) {
           if (err) {
             return done(err);
           }
