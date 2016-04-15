@@ -14,6 +14,7 @@ var AgentSchema = new Schema({
 module.exports = mongoose.model('Agent', AgentSchema);
 
 var flightData = new Schema({
+	companyName: String,
 	flightNo: String,
 	date: Date,
 	numberOfSeats: Number
@@ -28,4 +29,4 @@ var hotelDB = new Schema({
 
 });
 
-module.exports = mongoose.model('flightDB', flightData);
+module.exports = mongoose.model('flightDB', flightDB);

@@ -16,5 +16,6 @@ router.post('/flight/search', controller.flightSearch);
 router.post('/flight/hold', controller.flightHold);
 router.post('/flight/pay', controller.flightPay);
 router.post('/flight/release', controller.flightRelease);
+router.post('/flight/cancel', controller.flightRelease);
 
 module.exports = router;
