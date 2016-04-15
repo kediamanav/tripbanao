@@ -67,6 +67,7 @@ angular.module('tripbanaoApp')
     };
 
     $scope.$on('$destroy', function() {
+      //If you exit the function, destroy timer
       $scope.destroyTimer();
     });
   }]);
