@@ -67,7 +67,6 @@ angular.module('tripbanaoApp')
     };
 
     $scope.$on('$destroy', function() {
-      // Make sure that the interval is destroyed too
       $scope.destroyTimer();
     });
   }]);
