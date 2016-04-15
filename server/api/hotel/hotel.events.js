@@ -4,8 +4,8 @@
 
 'use strict';
 
-import {EventEmitter} from 'events';
-import Hotel from './hotel.model';
+var EventEmitter = require('events').EventEmitter;
+var Hotel = require('./hotel.model');
 var HotelEvents = new EventEmitter();
 
 // Set max event listeners (0 == unlimited)
@@ -30,4 +30,4 @@ function emitEvent(event) {
   }
 }
 
-export default HotelEvents;
+module.exports = HotelEvents;

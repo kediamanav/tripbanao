@@ -14,7 +14,7 @@ function responseWithResult(res, statusCode, requestId) {
   statusCode = statusCode || 200;
   return function(entity) {
     if (entity) {
-      console.log("inserting");
+      console.log("sending response");
       console.log(entity);
       entity = {'id': requestId, 'payLoad': entity};
       res.status(statusCode).json(entity);
@@ -112,19 +112,21 @@ function sendSearchResult(id, jsonRequest, requestDate, flight, res){
     }
 
     var tempResult = {
+      'companyName': flight[i].companyName,
+      'flightNo': flight[i].flightNo,
       'from': jsonRequest.from,
       'to': jsonRequest.to,
-      'arrivalTime': flight[i].arrivalTime.toUTCString().split(' ')[4],
       'departureTime': flight[i].departureTime.toUTCString().split(' ')[4],
-      'flightNo': flight[i].flightNo,
-      'companyName': flight[i].companyName,
+      'arrivalTime': flight[i].arrivalTime.toUTCString().split(' ')[4],
       'price': flight[i].price,
       'duration': flight[i].duration,
       'seatsAvailable': numSeats,
       'date': requestDate
     };
+
     result.push(tempResult);
   }
+  
   res.json({'id': id, 'payLoad': result});
 }
 
@@ -133,15 +135,12 @@ function changeFlightSeatStatus(res, date, deltaNumberOfSeats){
     if(entity){
       //We get the value of findAsync in the 'entity' variable. This is an array.
       //Since the flightNo is given, there can be only 1 element in the array.
-      console.log("changeFlightStatus");
-      console.log(entity[0]);
-      console.log("");
+
       for(var i = 0; i < entity[0].seatsAvailable.length; i++){
-        console.log(entity[0].seatsAvailable[i].date);
-        console.log(new Date(date));
-        console.log("");
+        
         if (new Date(entity[0].seatsAvailable[i].date).getTime() == new Date(date).getTime()){ //We search for the number of seats available for the query date of the user.
           entity[0].seatsAvailable[i].numberOfSeats += deltaNumberOfSeats; // delta is +ve for cancel/release and -ve for hold and book.
+          
           if (entity[0].seatsAvailable[i].numberOfSeats < 0) // failed response
             return res.json({"success": 0});
           else return entity[0].save() // If successful, save it in mongoDB and update the response variable.
@@ -162,8 +161,10 @@ exports.search = function(req, res) {
   var jsonRequest = req.body.payLoad;
   var requestDate = new Date(jsonRequest.date);
   
+  console.log("search")
   console.log(jsonRequest);
   console.log(requestDate);
+  
   Flight.findAsync({ 
     'from': jsonRequest.from, 
     'to': jsonRequest.to,
@@ -198,10 +199,12 @@ exports.destroy = function(req, res) {
     .catch(handleError(res));
 };
 
+//Hold the data to book.
 exports.hold = function(req, res) {
   
   var jsonRequest = req.body;
   var requestDate = new Date(jsonRequest.date);
+  
   console.log("hold");
   console.log(jsonRequest);
   
@@ -214,8 +217,10 @@ exports.cancel = function(req, res) {
 
   var jsonRequest = req.body;
   var requestDate = new Date(jsonRequest.date);
+  
   console.log("cancel/release");
   console.log(jsonRequest);
+  
   Flight.findAsync({ 'flightNo': jsonRequest.flightNo})
     .then(changeFlightSeatStatus(res, requestDate, jsonRequest.numberOfSeats));
 };
