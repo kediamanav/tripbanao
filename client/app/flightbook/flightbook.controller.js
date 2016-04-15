@@ -19,21 +19,25 @@ angular.module('tripbanaoApp')
         	console.log("Go ahead with the booking");
         	$scope.loading = false;
         	$scope.user.id = value.id;
+          $scope.startTime();
         }
         else{
         	console.log("Cannot book");
-          $scope.loading = false;
   			  $scope.text = "Sorry, the seats have been taken, Please go back and select another flight";
         }
     });
 
-    var stop = $interval(function() {
+    var stop;
+
+    $scope.startTime = function(){
+      stop = $interval(function() {
         if ($scope.timer > 0) {
-        	$scope.timer = $scope.timer-1;
+          $scope.timer = $scope.timer-1;
         } else {
           $scope.stopTime();
         }
       }, 1000);
+    };
 
     $scope.stopTime = function() {
       if (angular.isDefined(stop)) {
@@ -63,7 +67,7 @@ angular.module('tripbanaoApp')
     };
 
     $scope.$on('$destroy', function() {
-      // Make sure that the interval is destroyed too
+      //If you exit the function, destroy timer
       $scope.destroyTimer();
     });
   }]);
