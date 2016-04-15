@@ -15,7 +15,7 @@ module.exports = mongoose.model('Agent', AgentSchema);
 
 var flightData = new Schema({
 	flightNo: String,
-	deptartureTime: Date,
+	date: Date,
 	numberOfSeats: Number
 });
 

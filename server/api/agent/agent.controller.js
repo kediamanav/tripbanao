@@ -14,7 +14,7 @@
  var request = require('request-json');
  var ReadWriteLock = require('rwlock');
 
-var flightServers = {'Emirates': 'http://10.147.8.201:9000'}//, ['http://localhost:9000']; //
+var flightServers = {'Emirates': 'http://10.146.220.140:9000'}//, ['http://localhost:9000']; //
 
 
  function handleError(res, statusCode) {
@@ -229,7 +229,7 @@ function respondToManav(res, result){
 // holding flight seats for ttl time
 export function flightHold(req, res) {
 	console.log('in hold ');
-	console.log(req.body);
+	// console.log(req.body);
 
 	var data = req.body;
 	var lock = new ReadWriteLock();
@@ -239,8 +239,9 @@ export function flightHold(req, res) {
 
 	for(var i = 0; i < data.length; i++) {
 		var dataToSend = {'flightNo': data[i].flightNo, 
-		'departureTime': data[i].departureTime, 
+		'date': data[i].date, 
 		'numberOfSeats': data[i].seatsAvailed};
+		console.log(dataToSend);
 
 		dbData.push(dataToSend);
 
@@ -271,10 +272,7 @@ export function flightHold(req, res) {
 						flightDB.createAsync(dbData)
 							.then(respondToManav(res, true));
 					}
-					else {
-						var tomnv = {'result': false}
-						res.json(tomnv);
-					}
+					else res.json({'result': false});
 				}
 
 			}
@@ -283,10 +281,50 @@ export function flightHold(req, res) {
 
 }	
 
+
+function sendReleaseToCompany(res) {
+	return function(entity) {
+		var data = entity.data;
+		var count = 0;
+		var lock = new ReadWriteLock();
+
+		for(var i = 0; i < data.length; i++) {
+			var client = request.createClient(flightServers[data[i].companyName]);
+			client.post(
+				'/api/flights/release',
+				data[i],
+				function(error, response, body) {
+					lock.writeLock(function(release){
+						count += 1;
+						release();
+					});
+					if(error) {
+						console.log(error);
+					} else {
+						var c;
+						lock.readLock(function(release) {
+							c = count;
+						});
+						if(c == data.length){
+							flightDB.findByIdAsync(entity.id)
+							.then(removeEntity(res))
+							.catch(handleError(res));
+						}
+					}
+				});
+		}
+	}
+}
+
+
+
 // flight release
 export function flightRelease(req, res) {
+	console.log('in release');
 	console.log(req.body);
-	res.end();
+	flightDB.findByIdAsync(req.body.id)
+	.then(sendReleaseToCompany(res))
+	.catch(handleError(res));
 }	
 
 // flight pay
