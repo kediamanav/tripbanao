@@ -26,20 +26,25 @@ angular.module('tripbanaoApp')
     });
   }])
   .service('FlightDetail', function () {
-  	var flight = {};
+  	var flight = [];
 
   	var putFlight = function(data){
-  		flight = data;
-  		console.log(flight);
+  		flight.push(data);
+  		console.log(data);
   	}
 
   	var getFlight = function(){
   		return flight;
   	}
 
+    var resetFlight = function(){
+      flight = [];
+    }
+
   	return{
   		putFlight : putFlight,
-  		getFlight : getFlight
+  		getFlight : getFlight,
+      resetFlight: resetFlight
   	};
   })
   .service('HotelDetail', function () {
@@ -54,12 +59,39 @@ angular.module('tripbanaoApp')
       return hotel;
     }
 
+    var resetHotel = function(){
+      hotel = {};
+    }
+
     return{
       putHotel : putHotel,
-      getHotel : getHotel
+      getHotel : getHotel,
+      resetHotel: resetHotel
     };
   })
   .service('BookingDetail', function () {
+    var flight = [];
+
+    var putFlight = function(data){
+      flight.push(data);
+      console.log(data);
+    }
+
+    var getFlight = function(){
+      return flight;
+    }
+
+    var resetFlight = function(){
+      flight = [];
+    }
+
+    return{
+      putFlight : putFlight,
+      getFlight : getFlight,
+      resetFlight: resetFlight
+    };
+  })
+  .service('UserDetail', function () {
     var user = {};
 
     var putUser = function(data){

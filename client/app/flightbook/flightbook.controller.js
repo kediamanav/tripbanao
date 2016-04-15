@@ -1,20 +1,18 @@
 'use strict';
 
 angular.module('tripbanaoApp')
-  .controller('FlightbookCtrl',['$scope', '$location', 'FlightBook', 'FlightDetail', 'BookingDetail', '$interval', '$window', 'FlightRelease', function ($scope, $location, FlightBook, FlightDetail, BookingDetail, $interval, $window, FlightRelease) {
+  .controller('FlightbookCtrl',['$scope', '$location', '$interval', '$window','FlightBook', 'BookingDetail', 'UserDetail', 'FlightRelease', function ($scope, $location, $interval, $window, FlightBook, BookingDetail, UserDetail, FlightRelease) {
     
   	$scope.loading =true;
   	$scope.text = "Loading...";
 
-    $scope.fl = FlightDetail.getFlight();
-    console.log($scope.fl);
+    $scope.flights = BookingDetail.getFlight();
+    console.log($scope.flights);
 
     $scope.user = {};
     $scope.timer = 10;
 
-    $scope.temp = [$scope.fl];
-
-    FlightBook.book($scope.temp, function success(value){
+    FlightBook.book($scope.flights, function success(value){
     	//value==true;
         console.log(value);
         if(value.result==true){
@@ -24,7 +22,8 @@ angular.module('tripbanaoApp')
         }
         else{
         	console.log("Cannot book");
-  			$scope.text = "Sorry, the seats have been taken, Please go back and select another flight";
+          $scope.loading = false;
+  			  $scope.text = "Sorry, the seats have been taken, Please go back and select another flight";
         }
     });
 
@@ -58,8 +57,8 @@ angular.module('tripbanaoApp')
     }
 
     $scope.payFlight = function(){
-        FlightDetail.putFlight($scope.fl);
-        BookingDetail.putUser($scope.user);
+        UserDetail.putUser($scope.user);
+        $scope.destroyTimer();
         $location.path("/bookresult");
     };
 

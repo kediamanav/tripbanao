@@ -15,7 +15,7 @@
  var ReadWriteLock = require('rwlock');
  var flightDB = require('./agent.model');
 
-var flightServers = {'Emirates': 'http://10.146.93.238:9000'}//, ['http://localhost:9000']; //
+var flightServers = {'Emirates': 'http://10.147.8.201:9000'}//, ['http://localhost:9000']; //
 
 
  function handleError(res, statusCode) {
