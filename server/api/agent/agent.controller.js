@@ -57,6 +57,8 @@ var flightServers = {'Emirates': 'http://10.147.8.201:9000'}//, ['http://localho
  function removeEntity(res) {
  	return function(entity) {
  		if (entity) {
+ 			console.log('removing db data');
+ 			console.log(entity);
  			return entity.removeAsync()
  			.then(function() {
  				res.status(204).end();
@@ -233,7 +235,7 @@ function respondToManav(res, result){
 // holding flight seats for ttl time
 export function flightHold(req, res) {
 	console.log('in hold ');
-	// console.log(req.body);
+	console.log(req.body);
 
 	var data = req.body;
 	var lock = new ReadWriteLock();
@@ -306,6 +308,8 @@ function sendReleaseToCompany(res) {
 				'/api/flights/release',
 				data[i],
 				function(error, response, body) {
+					console.log('count = ' + count);
+					console.log(body);
 					lock.writeLock(function(release){
 						count += 1;
 						release();
@@ -316,8 +320,11 @@ function sendReleaseToCompany(res) {
 						var c;
 						lock.readLock(function(release) {
 							c = count;
+							release();
 						});
+						console.log('count ====== ' + count)
 						if(c == data.length){
+							console.log('received all responses. now removing from db');
 							flightDB.findByIdAsync(entity.id)
 							.then(removeEntity(res))
 							.catch(handleError(res));
