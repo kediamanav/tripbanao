@@ -1,12 +1,30 @@
 'use strict';
 
-var mongoose = require('bluebird').promisifyAll(require('mongoose'));
+import mongoose from 'mongoose';
 var Schema = mongoose.Schema;
 
-var HotelSchema = new Schema({
-  name: String,
-  info: String,
-  active: Boolean
+//Schema to store the check in and check out time for each room in the hotel
+var bookingsObj = new Schema({
+	checkIn: { type: Date, default: Date.now},
+	checkOut: { type: Date, default: Date.now}},
+	{ noId: true}
+);
+
+var HotelDetails = new Schema({
+  roomNo: Number,
+  type: { type: String, default: "DoubleAC" },
+  price: { type: Number, default: 2000},
+  bookings: { type:[bookingsObj], default: [] }, //array of bookings for that particular room.
+  numberOfPerson: Number},
+  { noId: true
 });
 
-module.exports = mongoose.model('Hotel', HotelSchema);
+//Assuming that there is single hotel per city. In that hotel, we store the details of the rooms.
+var HotelSchema = new Schema({
+  city: String,
+  hotelDescription: [HotelDetails]
+});
+
+HotelSchema.index({city: 1, roomNo: 1, unique: true});
+
+export default mongoose.model('Hotel', HotelSchema); 
