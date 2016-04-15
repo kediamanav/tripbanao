@@ -12,10 +12,10 @@ var bookingsObj = new Schema({
 
 var HotelDetails = new Schema({
   roomNo: Number,
-  type: { type: String, default: "DoubleAC" },
-  price: { type: Number, default: 2000},
+  type: { type: String, default: "Double AC" },
+  price: { type: Number, default: 2530},
   bookings: { type:[bookingsObj], default: [] }, //array of bookings for that particular room.
-  numberOfPerson: Number},
+  numberOfPersons: Number},
   { noId: true
 });
 

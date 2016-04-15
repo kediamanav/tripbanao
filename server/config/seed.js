@@ -10,29 +10,26 @@ Flight.find({}).removeAsync()
     Flight.create({
       "companyName": compName,
       "flightNo": "1234",
-      "from": "kolkata",
-      "to": "delhi",
-      "runningDays": ["Mon","Tue","Wed"]
+      "from": "delhi",
+      "to": "kolkata",
     }, 
     {
       "companyName": compName,
       "flightNo": "1235",
       "from": "mumbai",
-      "to": "delhi",
-      "runningDays": ["Fri","Sat","Sun"]
+      "to": "bangkok",
     }, 
     {
       "companyName": compName,
       "flightNo": "1236",
-      "from": "kolkata",
-      "to": "bangkok",
+      "from": "bangkok",
+      "to": "kolkata",
     }, 
     {
       "companyName": compName,
       "flightNo": "1237",
       "from": "delhi",
       "to": "mumbai",
-      "runningDays": ["Thu"],
     }, 
     {
       "companyName": compName,

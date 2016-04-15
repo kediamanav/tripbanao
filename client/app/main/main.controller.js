@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('tripbanaoApp')
-  .controller('MainCtrl',['$scope', '$location', 'FlightDetail','HotelDetail','BookingCancel', function($scope, $location, FlightDetail, HotelDetail, BookingCancel) {
+  .controller('MainCtrl',['$scope', '$location', '$window', 'FlightDetail','HotelDetail','BookingCancel', function($scope, $location, $window, FlightDetail, HotelDetail, BookingCancel) {
     
     $scope.panel=0;
 
@@ -91,8 +91,9 @@ angular.module('tripbanaoApp')
       }
       BookingCancel.cancel($scope.temp, function success(value){
         console.log("Booking cancelled");
+        $window.alert("Booking succesfully cancelled")
       });
-    }
+    };
 
     $scope.searchHotels = function(){
 
