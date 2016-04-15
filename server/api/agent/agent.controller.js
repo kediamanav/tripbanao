@@ -8,14 +8,14 @@
  */
 
  'use strict';
-
+var mongoose = require('mongoose');
  var _ = require('lodash');
  var flightDB = require('./agent.model');
  var request = require('request-json');
  var ReadWriteLock = require('rwlock');
  var flightDB = require('./agent.model');
 
-var flightServers = {'Emirates': 'http://10.146.220.140:9000'}//, ['http://localhost:9000']; //
+var flightServers = {'Emirates': 'http://10.147.8.201:9000'}//, ['http://localhost:9000']; //
 
 
  function handleError(res, statusCode) {
@@ -223,6 +223,9 @@ function respondToManav(res, result){
 		var id = entity._id;
 		var data = {'result': result,
 					'id': id};
+		console.log('check chcek');
+		console.log(entity);
+		console.log(data);
 		res.json(data);
 	}
 }
@@ -237,14 +240,17 @@ export function flightHold(req, res) {
 	var count = 0;
 	var okay = 1;
 	var dbData = [];
+	// console.log(dbData);
 
 	for(var i = 0; i < data.length; i++) {
 		var dataToSend = {'flightNo': data[i].flightNo, 
 		'date': data[i].date, 
+		'companyName': data[i].companyName,
 		'numberOfSeats': data[i].seatsAvailed};
 		console.log(dataToSend);
 
 		dbData.push(dataToSend);
+		console.log(dbData);
 
 		var client = request.createClient(flightServers[data[i].companyName]);
 		client.post(
@@ -270,7 +276,10 @@ export function flightHold(req, res) {
 				if(c == data.length){
 					console.log("All requests received");
 					if(okay == 1) {
-						flightDB.createAsync(dbData)
+						console.log('everything okay');
+						console.log(dbData);
+						var x = {'data': dbData};
+						flightDB.createAsync(x)
 							.then(respondToManav(res, true));
 					}
 					else res.json({'result': false});
@@ -285,6 +294,8 @@ export function flightHold(req, res) {
 
 function sendReleaseToCompany(res) {
 	return function(entity) {
+		console.log('in releasing');
+		console.log(entity);
 		var data = entity.data;
 		var count = 0;
 		var lock = new ReadWriteLock();
@@ -323,7 +334,9 @@ function sendReleaseToCompany(res) {
 export function flightRelease(req, res) {
 	console.log('in release');
 	console.log(req.body);
-	flightDB.findByIdAsync(req.body.id)
+
+	var id = mongoose.Types.ObjectId(req.body.id);
+	flightDB.findByIdAsync(id)
 	.then(sendReleaseToCompany(res))
 	.catch(handleError(res));
 }	
