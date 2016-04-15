@@ -15,8 +15,8 @@ var FlightSchema = new Schema({
   flightNo: String,
   from: String,
   to: String,
-  departureTime: { type: Date, default: Date.now },
-  arrivalTime: { type: Date, default: Date.now },
+  departureTime: { type: Date, default: new Date("Thu Jan 01 1970 21:30:00 GMT+0530 (IST)") },
+  arrivalTime: { type: Date, default: new Date("Thu Jan 01 1970 23:30:00 GMT+0530 (IST)") },
   runningDays:{ type:[String], default: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'] }, // An array of days when the flight runs weekly. [Mon, Tues, Wed]
   seatsAvailable:{ type:[seatAvailableObj], default: [] }, //Array to store seatAvailableObj Schema.
   price: { type: Number, default: 2000 },

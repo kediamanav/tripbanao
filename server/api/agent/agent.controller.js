@@ -10,7 +10,7 @@
  'use strict';
 
  var _ = require('lodash');
- var Agent = require('./agent.model');
+ var flightDB = require('./agent.model');
  var request = require('request-json');
  var ReadWriteLock = require('rwlock');
  var flightDB = require('./agent.model');
@@ -205,6 +205,8 @@ export function flightSearch(req, res) {
 							release();
 						});
 						if(c == data.length * Object.keys(flightServers).length) {
+							console.log('search result: ');
+							console.log(result);
 							res.json(result);
 						}
 					} else {
@@ -250,6 +252,7 @@ export function flightHold(req, res) {
 			function(err, response, body){
 
 				console.log("Reply received");
+				console.log(body);
 
 				lock.writeLock(function(release){
 					count += 1;
