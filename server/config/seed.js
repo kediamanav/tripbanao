@@ -12,13 +12,7 @@ Flight.find({}).removeAsync()
       "flightNo": "1234",
       "from": "kolkata",
       "to": "delhi",
-      "runningDays": ["Mon","Tue","Wed"],
-      "seatsAvailable":[
-          {
-              "date": "2011-10-12",
-              "numberOfSeats": 123
-          }
-      ]
+      "runningDays": ["Mon","Tue","Wed"]
     }, 
     {
       "companyName": compName,
@@ -39,12 +33,6 @@ Flight.find({}).removeAsync()
       "from": "delhi",
       "to": "mumbai",
       "runningDays": ["Thu"],
-      "seatsAvailable":[
-          {
-              "date": "2011-10-12",
-              "numberOfSeats": 523
-          }
-      ]
     }, 
     {
       "companyName": compName,
