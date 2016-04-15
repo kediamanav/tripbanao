@@ -19,6 +19,7 @@ angular.module('tripbanaoApp')
         	console.log("Go ahead with the booking");
         	$scope.loading = false;
         	$scope.user.id = value.id;
+          $scope.startTime();
         }
         else{
         	console.log("Cannot book");
@@ -26,13 +27,17 @@ angular.module('tripbanaoApp')
         }
     });
 
-    var stop = $interval(function() {
+    var stop;
+
+    $scope.startTime = function(){
+      stop = $interval(function() {
         if ($scope.timer > 0) {
-        	$scope.timer = $scope.timer-1;
+          $scope.timer = $scope.timer-1;
         } else {
           $scope.stopTime();
         }
       }, 1000);
+    };
 
     $scope.stopTime = function() {
       if (angular.isDefined(stop)) {
