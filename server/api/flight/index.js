@@ -10,7 +10,7 @@ router.post('/insert', controller.insert);
 router.post('/delete', controller.destroy);
 router.post('/update', controller.update);
 router.post('/hold', controller.hold);
-// router.post('/confirm', controller.confirm);
-// router.post('/cancel', controller.cancel);
+router.post('/cancel', controller.cancel);
+router.post('/release', controller.cancel);
 
 module.exports = router;
