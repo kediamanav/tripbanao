@@ -13,6 +13,7 @@
  var flightDB = require('./agent.model');
  var request = require('request-json');
  var ReadWriteLock = require('rwlock');
+ var flightDB = require('./agent.model');
 
 var flightServers = {'Emirates': 'http://10.146.220.140:9000'}//, ['http://localhost:9000']; //
 

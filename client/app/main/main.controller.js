@@ -92,6 +92,8 @@ angular.module('tripbanaoApp')
         });
       }
 
+      console.log("Inside searchFlights");
+      console.log($scope.flight);
       FlightDetail.putFlight($scope.flight);
 
       $location.path("/flights");
